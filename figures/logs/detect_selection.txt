@@ -1,0 +1,56 @@
+
+=== 10 loci, n=10: 10-seed mean+/-SD AUC, sensitivity by true-s bin at 5% false positives ===
+paired t-test PGINN vs MSE AUC across seeds: t=+0.469 p=0.6501; star ratio AUC 0.8613
+-- MSE: AUC 0.8308 +/- 0.0058 (seeds: ['0.8257', '0.8286', '0.8243', '0.8317', '0.8438', '0.8257', '0.8286', '0.8329', '0.8357', '0.8313']) --
+  s in [     1,    10): n=124  sensitivity=0.065+/-0.017
+  s in [    10,    50): n=110  sensitivity=0.672+/-0.033
+  s in [    50,   200): n= 77  sensitivity=0.999+/-0.004
+  s in [   200,1000.0001): n= 89  sensitivity=1.000+/-0.000
+-- PGINN: AUC 0.8318 +/- 0.0044 (seeds: ['0.8268', '0.8282', '0.8334', '0.8325', '0.8325', '0.8253', '0.8353', '0.8389', '0.8285', '0.8363']) --
+  s in [     1,    10): n=124  sensitivity=0.089+/-0.019
+  s in [    10,    50): n=110  sensitivity=0.705+/-0.035
+  s in [    50,   200): n= 77  sensitivity=1.000+/-0.000
+  s in [   200,1000.0001): n= 89  sensitivity=1.000+/-0.000
+
+=== 10 loci, n=20: 10-seed mean+/-SD AUC, sensitivity by true-s bin at 5% false positives ===
+paired t-test PGINN vs MSE AUC across seeds: t=-4.299 p=0.0020; star ratio AUC 0.8485
+-- MSE: AUC 0.8168 +/- 0.0047 (seeds: ['0.8224', '0.8185', '0.8119', '0.8125', '0.8195', '0.8234', '0.8091', '0.8183', '0.8185', '0.8140']) --
+  s in [     1,    10): n=145  sensitivity=0.061+/-0.013
+  s in [    10,    50): n= 89  sensitivity=0.706+/-0.057
+  s in [    50,   200): n= 76  sensitivity=1.000+/-0.000
+  s in [   200,1000.0001): n= 90  sensitivity=1.000+/-0.000
+-- PGINN: AUC 0.8083 +/- 0.0050 (seeds: ['0.8146', '0.8124', '0.8076', '0.7981', '0.8050', '0.8054', '0.8096', '0.8055', '0.8107', '0.8138']) --
+  s in [     1,    10): n=145  sensitivity=0.050+/-0.013
+  s in [    10,    50): n= 89  sensitivity=0.627+/-0.057
+  s in [    50,   200): n= 76  sensitivity=1.000+/-0.000
+  s in [   200,1000.0001): n= 90  sensitivity=1.000+/-0.000
+
+=== 1 locus, n=10: 10-seed mean+/-SD AUC, sensitivity by true-s bin at 5% false positives ===
+paired t-test PGINN vs MSE AUC across seeds: t=+1.178 p=0.2692; star ratio AUC 0.7565
+-- MSE: AUC 0.7529 +/- 0.0116 (seeds: ['0.7408', '0.7623', '0.7347', '0.7622', '0.7442', '0.7560', '0.7450', '0.7729', '0.7561', '0.7545']) --
+  s in [     1,    10): n=152  sensitivity=0.057+/-0.011
+  s in [    10,    50): n= 79  sensitivity=0.224+/-0.040
+  s in [    50,   200): n= 75  sensitivity=0.789+/-0.043
+  s in [   200,1000.0001): n= 94  sensitivity=0.984+/-0.014
+-- PGINN: AUC 0.7569 +/- 0.0062 (seeds: ['0.7532', '0.7589', '0.7567', '0.7579', '0.7408', '0.7607', '0.7613', '0.7585', '0.7613', '0.7600']) --
+  s in [     1,    10): n=152  sensitivity=0.043+/-0.012
+  s in [    10,    50): n= 79  sensitivity=0.219+/-0.048
+  s in [    50,   200): n= 75  sensitivity=0.827+/-0.042
+  s in [   200,1000.0001): n= 94  sensitivity=0.999+/-0.003
+
+=== 1 locus, n=20: 10-seed mean+/-SD AUC, sensitivity by true-s bin at 5% false positives ===
+paired t-test PGINN vs MSE AUC across seeds: t=+1.512 p=0.1648; star ratio AUC 0.7804
+-- MSE: AUC 0.7960 +/- 0.0048 (seeds: ['0.7948', '0.7972', '0.7870', '0.7934', '0.7953', '0.7981', '0.8019', '0.7918', '0.7970', '0.8037']) --
+  s in [     1,    10): n=128  sensitivity=0.059+/-0.014
+  s in [    10,    50): n= 90  sensitivity=0.301+/-0.040
+  s in [    50,   200): n= 77  sensitivity=0.869+/-0.027
+  s in [   200,1000.0001): n=105  sensitivity=0.997+/-0.006
+-- PGINN: AUC 0.8010 +/- 0.0082 (seeds: ['0.7977', '0.8116', '0.8157', '0.8052', '0.7921', '0.7948', '0.8053', '0.7945', '0.7928', '0.8007']) --
+  s in [     1,    10): n=128  sensitivity=0.078+/-0.012
+  s in [    10,    50): n= 90  sensitivity=0.301+/-0.030
+  s in [    50,   200): n= 77  sensitivity=0.890+/-0.020
+  s in [   200,1000.0001): n=105  sensitivity=1.000+/-0.000
+
+Saved figure to ../figures/detection_roc.pdf
+Saved table to ../figures/detection_table.csv
+Saved LaTeX table to ../figures/tab_detection.tex

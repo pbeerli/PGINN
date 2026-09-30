@@ -1,0 +1,27 @@
+DGRP sample: 205 lines in the alignment, 176 with sequence data at Adh
+
+2x2 table (DGRP n=176, D.mel vs D.sim+D.yak combined):
+           Repl  Syn
+Fixed(D)      8    28
+Poly(P)       4    16
+Fisher exact p=1, odds ratio=1.143
+chi2 (Yates) p=1
+alpha=0.125
+
+sites excluded from Fixed because polymorphic in DGRP n=176: 8
+  codon 129 vs dsim: dmel=C dsim=T  within-dmel class=syn
+  codon 177 vs dsim: dmel=G dsim=C  within-dmel class=syn
+  codon 180 vs dsim: dmel=T dsim=C  within-dmel class=syn
+  codon 193 vs dsim: dmel=C dsim=A  within-dmel class=repl
+  codon 202 vs dsim: dmel=T dsim=C  within-dmel class=syn
+  codon 213 vs dsim: dmel=C dsim=T  within-dmel class=syn
+  codon 13 vs dyak: dmel=T dyak=G  within-dmel class=syn
+  codon 129 vs dyak: dmel=C dyak=T  within-dmel class=syn
+  codon 173 vs dyak: dmel=T dyak=C  within-dmel class=syn
+  codon 177 vs dyak: dmel=G dyak=C  within-dmel class=syn
+  codon 180 vs dyak: dmel=T dyak=C  within-dmel class=syn
+  codon 193 vs dyak: dmel=C dyak=A  within-dmel class=repl
+  codon 202 vs dyak: dmel=T dyak=C  within-dmel class=syn
+
+wrote figures/mcdonald_kreitman_test.csv
+wrote figures/tab_mk_test.tex

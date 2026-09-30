@@ -1,0 +1,66 @@
+=== Sweep panels (msprime seed=1): correlation(|distance|, predicted s) and peak half-width ===
+[seed 1] 30 replicates, tree counts: [34, 26, 36, 26, 39, 16, 23, 37, 34, 39, 29, 29, 25, 42, 37, 58, 52, 19, 30, 36, 28, 26, 18, 41, 50, 26, 32, 26, 43, 30]
+Loading averaged features from: data/msprime-metrics-r2e-08-seed1
+Saved 3 averaged samples.
+
+-- r=2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.5666 (p=7.99e-10)  peak=49.97  far-field baseline=1.622  half-width=35000 bp
+  PGINN: corr(|dist|, s_hat) = -0.6037 (p=2.95e-11)  peak=30.96  far-field baseline=1.533  half-width=25000 bp
+[seed 1] 30 replicates, tree counts: [33, 9, 15, 23, 27, 7, 16, 26, 14, 10, 21, 23, 19, 15, 22, 19, 25, 17, 20, 30, 24, 26, 16, 21, 19, 17, 10, 19, 34, 19]
+Loading averaged features from: data/msprime-metrics-r1.2e-08-seed1
+Saved 3 averaged samples.
+
+-- r=1.2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.6619 (p=6.50e-14)  peak=39.99  far-field baseline=0.7464  half-width=50000 bp
+  PGINN: corr(|dist|, s_hat) = -0.6982 (p=6.82e-16)  peak=30.24  far-field baseline=1.285  half-width=50000 bp
+
+=== Neutral control panel (msprime seed=1): max/mean predicted s (no true sweep) ===
+[seed 1] 30 replicates, tree counts: [60, 52, 41, 33, 51, 63, 58, 26, 43, 36, 54, 53, 54, 48, 42, 60, 54, 46, 47, 37, 58, 48, 59, 30, 49, 35, 40, 39, 57, 48]
+Loading averaged features from: data/msprime-metrics-neutral-seed1
+Saved 3 averaged samples.
+  MSE: max s_hat = 2.85  mean s_hat = 1.327
+  PGINN: max s_hat = 2.859  mean s_hat = 1.431
+=== Sweep panels (msprime seed=2): correlation(|distance|, predicted s) and peak half-width ===
+[seed 2] 30 replicates, tree counts: [26, 36, 26, 39, 16, 23, 37, 34, 39, 29, 29, 25, 42, 37, 58, 52, 19, 30, 36, 28, 26, 18, 41, 50, 26, 32, 26, 43, 30, 24]
+Loading averaged features from: data/msprime-metrics-r2e-08-seed2
+Saved 3 averaged samples.
+
+-- r=2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.5629 (p=1.09e-09)  peak=40.62  far-field baseline=1.613  half-width=45000 bp
+  PGINN: corr(|dist|, s_hat) = -0.6030 (p=3.16e-11)  peak=29.08  far-field baseline=1.457  half-width=25000 bp
+[seed 2] 30 replicates, tree counts: [9, 15, 23, 27, 7, 16, 26, 14, 10, 21, 23, 19, 15, 22, 19, 25, 17, 20, 30, 24, 26, 16, 21, 19, 17, 10, 19, 34, 19, 26]
+Loading averaged features from: data/msprime-metrics-r1.2e-08-seed2
+Saved 3 averaged samples.
+
+-- r=1.2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.6541 (p=1.60e-13)  peak=48.72  far-field baseline=0.8973  half-width=40000 bp
+  PGINN: corr(|dist|, s_hat) = -0.7268 (p=1.13e-17)  peak=27.76  far-field baseline=1.275  half-width=45000 bp
+
+=== Neutral control panel (msprime seed=2): max/mean predicted s (no true sweep) ===
+[seed 2] 30 replicates, tree counts: [52, 41, 33, 51, 63, 58, 26, 43, 36, 54, 53, 54, 48, 42, 60, 54, 46, 47, 37, 58, 48, 59, 30, 49, 35, 40, 39, 57, 48, 35]
+Loading averaged features from: data/msprime-metrics-neutral-seed2
+Saved 3 averaged samples.
+  MSE: max s_hat = 3.398  mean s_hat = 1.323
+  PGINN: max s_hat = 2.96  mean s_hat = 1.51
+=== Sweep panels (msprime seed=3): correlation(|distance|, predicted s) and peak half-width ===
+[seed 3] 30 replicates, tree counts: [36, 26, 39, 16, 23, 37, 34, 39, 29, 29, 25, 42, 37, 58, 52, 19, 30, 36, 28, 26, 18, 41, 50, 26, 32, 26, 43, 30, 24, 33]
+Loading averaged features from: data/msprime-metrics-r2e-08-seed3
+Saved 3 averaged samples.
+
+-- r=2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.5503 (p=3.01e-09)  peak=42.12  far-field baseline=1.795  half-width=30000 bp
+  PGINN: corr(|dist|, s_hat) = -0.5918 (p=8.91e-11)  peak=29.57  far-field baseline=1.552  half-width=25000 bp
+[seed 3] 30 replicates, tree counts: [15, 23, 27, 7, 16, 26, 14, 10, 21, 23, 19, 15, 22, 19, 25, 17, 20, 30, 24, 26, 16, 21, 19, 17, 10, 19, 34, 19, 26, 18]
+Loading averaged features from: data/msprime-metrics-r1.2e-08-seed3
+Saved 3 averaged samples.
+
+-- r=1.2e-08/bp --
+  MSE: corr(|dist|, s_hat) = -0.6453 (p=4.27e-13)  peak=44.38  far-field baseline=1.127  half-width=45000 bp
+  PGINN: corr(|dist|, s_hat) = -0.7150 (p=6.48e-17)  peak=28.57  far-field baseline=1.458  half-width=45000 bp
+
+=== Neutral control panel (msprime seed=3): max/mean predicted s (no true sweep) ===
+[seed 3] 30 replicates, tree counts: [41, 33, 51, 63, 58, 26, 43, 36, 54, 53, 54, 48, 42, 60, 54, 46, 47, 37, 58, 48, 59, 30, 49, 35, 40, 39, 57, 48, 35, 34]
+Loading averaged features from: data/msprime-metrics-neutral-seed3
+Saved 3 averaged samples.
+  MSE: max s_hat = 3.302  mean s_hat = 1.325
+  PGINN: max s_hat = 2.873  mean s_hat = 1.545

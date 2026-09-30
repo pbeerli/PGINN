@@ -1,0 +1,5 @@
+regime,mse_mean_std,pginn_mean_std,reduction_pct,corr_mse,corr_pginn,q4_over_q1_gap_ratio,mse_mean_std_worst_seed_excluded,mse_pct_change_worst_seed_excluded
+"10 loci, n=10",0.2692,0.2274,15.5132,-0.0990,0.3930,-0.5313,0.2600,-3.4160
+"10 loci, n=20",0.2598,0.2289,11.8730,0.0168,0.4613,-0.5730,0.2537,-2.3234
+"1 locus, n=10",0.3681,0.2855,22.4281,0.0534,0.3298,0.3246,0.3579,-2.7688
+"1 locus, n=20",0.3514,0.3088,12.1190,-0.1369,0.2942,-0.6268,0.3456,-1.6672

@@ -1,0 +1,17 @@
+15 loci across 3351 bp, 176 individuals
+  locus  1 (window 00): chr2L:14615552-14615609 (58 bp)
+  locus  2 (window 01): chr2L:14615610-14615789 (180 bp)
+  locus  3 (window 02): chr2L:14615790-14615945 (156 bp)
+  locus  4 (window 03): chr2L:14615946-14616039 (94 bp)
+  locus  5 (window 04): chr2L:14616040-14616185 (146 bp)
+  locus  6 (window 05): chr2L:14616186-14616416 (231 bp)
+  locus  7 (window 06): chr2L:14616417-14616637 (221 bp)
+  locus  8 (window 07): chr2L:14616638-14616901 (264 bp)
+  locus  9 (window 08): chr2L:14616902-14617137 (236 bp)
+  locus 10 (window 09): chr2L:14617138-14617371 (234 bp)
+  locus 11 (window 10): chr2L:14617372-14617804 (433 bp)
+  locus 12 (window 11): chr2L:14617805-14618637 (833 bp)
+  locus 13 (window 12): chr2L:14618638-14618793 (156 bp)
+  locus 14 (window 13): chr2L:14618794-14618851 (58 bp)
+  locus 15 (window 14): chr2L:14618852-14618902 (51 bp)
+wrote data/adh-migrate/infile

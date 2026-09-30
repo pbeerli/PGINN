@@ -1,0 +1,70 @@
+Reproducibility
+================
+
+Every figure and table in the paper is produced by code/reproduce.sh:
+
+  cd code
+  ./reproduce.sh all          # or one stage at a time, in this order:
+  ./reproduce.sh simulate     # simulated datasets (seeded)
+  ./reproduce.sh train        # all networks; TRAIN_JOBS=8 TRAIN_THREADS=2 by default
+  ./reproduce.sh calibration
+  ./reproduce.sh recovery
+  ./reproduce.sh detection
+  ./reproduce.sh msprime
+  MIGRATE_NP=16 ./reproduce.sh adh
+
+Tables are written as LaTeX fragments (figures/tab_*.tex) that the paper
+includes directly, so the typeset numbers are the scripts' output. Numbers
+quoted in the running text are printed by the scripts named below; each
+script's output is kept in figures/logs/<script>.txt.
+
+Paper output                          Stage        Script -> file
+------------------------------------  -----------  ----------------------------------------------
+Table: sweep calibration (tab:calib)   calibration  calibrate_sweep.py -> tab_calib.tex
+Table: star ratio by n (appendix)      calibration  star_ratio_appendix.py -> tab_starratio.tex
+Neutral-limit check (Results text)     recovery     neutral_limit.py (log)
+Figures: recovery, 10 loci / 1 locus,  recovery     compare.py, seed 67 -> recovery_{10l,1l,10l_n20,1l_n20}.pdf
+  n=10 (main) and n=20 (appendix)
+Tables: recovery (tab:tenloci,         recovery     compare.py (10 seeds) + paired_test.py ->
+  tab:oneloc) and paired tests                        tab_tenloci.tex, tab_oneloc.tex
+Table: w sweep (tab:lambda-sweep)      recovery     lambda_sweep_val.py -> tab_lambda_sweep.tex
+w=1 check (Discussion text)            recovery     w1_check.py (log)
+n=176 recovery and paired test (text)  recovery     eval_n176.py (log)          
+Figure + table: detection ROC/AUC      detection    detect_selection.py -> detection_roc.pdf, tab_detection.tex
+Figure + table: combined detector      detection    combined_detector.py -> combined_detector.pdf,
+                                                      tab_combined_detector.tex
+Table: seed disagreement               detection    variance_mechanism.py -> tab_variance_mechanism.tex
+  (tab:variance-mechanism)
+Figure: msprime scan (fig:msprime)     msprime      msprime_scan.py -> msprime_scan.pdf
+msprime correlations / half-widths     msprime      msprime_metrics.py, seeds 1-3 (log)
+Figure: per-replicate msprime scan     msprime      msprime_scan_individual.py -> msprime_scan_individual.pdf
+Table + figure: single-chromosome      msprime      msprime_scan_detection_summary.py (with the star ratio +
+  detection (tab:msprime-detection)                   network classifiers of msprime_scan_detection_combined.py) ->
+                                                      tab_msprime_detection.tex, msprime_scan_detection_summary.pdf
+Figure: single-chromosome traces       msprime      msprime_scan_detection.py -> msprime_scan_detection.pdf
+Window-size / recombination checks     msprime      msprime_scan_singlechrom.py, 4 settings (log)
+  (text)
+Four-gamete segments (text)            adh          four_gamete_test.py, make_migrate_windows.py (log)
+migrate-n posterior genealogies        adh          migrate-n-mpi with code/inputs/adh/parmfile
+                                                      (fixed random seed, 16 MPI processes)
+Table + figure: Adh (tab:real-data,    adh          real_adh_migrate_scan.py -> tab_real_data.tex,
+  fig:real-data), Spearman rho (text)                 real_adh_migrate_scan.csv; real_data_summary_fig.py ->
+                                                      real_data_summary.pdf
+Adh out-of-distribution check (text)   adh          adh_ood_check.py (log)
+Table: McDonald-Kreitman (tab:mk-test) adh          mcdonald_kreitman_test.py -> tab_mk_test.tex
+
+Inputs
+------
+code/inputs/adh/dgrp_adh_205lines.fasta   Adh region of the 205 DGRP Freeze 2.0 lines (Huang et al. 2014);
+                                          29 lines without data at Adh are dropped, leaving 176
+code/inputs/adh/parmfile                  migrate-n settings for the Adh posterior sample
+code/inputs/adh/run_migrate.slurm         the same run as a SLURM job (16 MPI ranks)
+The McDonald-Kreitman outgroup sequences (D. simulans, D. yakuba) are
+fetched from NCBI by accession in mcdonald_kreitman_test.py.
+
+Determinism
+-----------
+Simulations are seeded (simulate_sweep.py passes a per-draw seed to
+simtree.py; msprime runs take explicit seeds), and every network has a
+fixed training seed. Neural-network training on a different CPU, thread
+count or PyTorch version can still change the last digits of the results.

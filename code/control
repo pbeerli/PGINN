@@ -1,0 +1,10 @@
+#!/bin/zsh
+# Generate simulated datasets (train / test / predict) via simulate_sweep.py.
+# Runs from this directory regardless of where it is invoked.
+cd "${0:A:h}" || exit 1
+template="$1"
+loci="$2"
+nind="${3:-10}"
+python simulate_sweep.py --folder data/train$template   -n 1000 --loci $loci --nind $nind
+python simulate_sweep.py --folder data/test$template    -n 100  --loci $loci --nind $nind
+python simulate_sweep.py --folder data/predict$template -n 100  --loci $loci --nind $nind

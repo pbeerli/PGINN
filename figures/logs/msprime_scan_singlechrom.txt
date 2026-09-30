@@ -1,0 +1,28 @@
+Loading averaged features from: data/msprime-scan-singlechrom
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom
+Saved 3 averaged samples.
+Saved figure to ../figures/msprime_scan_singlechrom.pdf
+Loading averaged features from: data/msprime-scan-singlechrom-w20
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-w20
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-w20
+Saved 3 averaged samples.
+Saved figure to data/msprime_scan_singlechrom_w20.pdf
+Loading averaged features from: data/msprime-scan-singlechrom-r10x
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-r10x
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-r10x
+Saved 3 averaged samples.
+Saved figure to data/msprime_scan_singlechrom_r10x.pdf
+Loading averaged features from: data/msprime-scan-singlechrom-r30x
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-r30x
+Saved 3 averaged samples.
+Loading averaged features from: data/msprime-scan-singlechrom-r30x
+Saved 3 averaged samples.
+Saved figure to data/msprime_scan_singlechrom_r30x.pdf

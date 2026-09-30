@@ -1,0 +1,138 @@
+  [seed 1] 34 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[1/30] seed 1: 34 trees, top_fraction star=0.12 MSE=0.18 PGINN=0.24 star+MSE=0.18 star+PGINN=0.18
+  [seed 1001] 37 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[2/30] seed 1001: 37 trees, top_fraction star=0.11 MSE=0.19 PGINN=0.11 star+MSE=0.16 star+PGINN=0.16
+  [seed 2001] 25 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[3/30] seed 2001: 25 trees, top_fraction star=0.32 MSE=0.24 PGINN=0.04 star+MSE=0.40 star+PGINN=0.04
+  [seed 3001] 39 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[4/30] seed 3001: 39 trees, top_fraction star=0.21 MSE=0.31 PGINN=0.15 star+MSE=0.23 star+PGINN=0.21
+  [seed 4001] 34 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[5/30] seed 4001: 34 trees, top_fraction star=0.47 MSE=0.68 PGINN=0.06 star+MSE=0.47 star+PGINN=0.35
+  [seed 5001] 37 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[6/30] seed 5001: 37 trees, top_fraction star=0.03 MSE=0.05 PGINN=0.08 star+MSE=0.05 star+PGINN=0.08
+  [seed 6001] 33 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[7/30] seed 6001: 33 trees, top_fraction star=0.27 MSE=0.48 PGINN=0.33 star+MSE=0.27 star+PGINN=0.27
+  [seed 7001] 26 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[8/30] seed 7001: 26 trees, top_fraction star=0.04 MSE=0.04 PGINN=0.23 star+MSE=0.04 star+PGINN=0.23
+  [seed 8001] 29 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[9/30] seed 8001: 29 trees, top_fraction star=0.03 MSE=0.34 PGINN=0.17 star+MSE=0.28 star+PGINN=0.17
+  [seed 9001] 19 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[10/30] seed 9001: 19 trees, top_fraction star=0.26 MSE=0.16 PGINN=0.32 star+MSE=0.16 star+PGINN=0.32
+  [seed 10001] 37 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[11/30] seed 10001: 37 trees, top_fraction star=0.03 MSE=0.11 PGINN=0.03 star+MSE=0.08 star+PGINN=0.03
+  [seed 11001] 28 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[12/30] seed 11001: 28 trees, top_fraction star=0.36 MSE=0.32 PGINN=0.14 star+MSE=0.43 star+PGINN=0.36
+  [seed 12001] 40 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[13/30] seed 12001: 40 trees, top_fraction star=0.15 MSE=0.07 PGINN=0.07 star+MSE=0.07 star+PGINN=0.07
+  [seed 13001] 36 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[14/30] seed 13001: 36 trees, top_fraction star=0.39 MSE=0.72 PGINN=0.39 star+MSE=0.42 star+PGINN=0.39
+  [seed 14001] 35 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[15/30] seed 14001: 35 trees, top_fraction star=0.20 MSE=0.23 PGINN=0.37 star+MSE=0.17 star+PGINN=0.20
+  [seed 15001] 38 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[16/30] seed 15001: 38 trees, top_fraction star=0.11 MSE=0.03 PGINN=0.03 star+MSE=0.03 star+PGINN=0.03
+  [seed 16001] 42 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[17/30] seed 16001: 42 trees, top_fraction star=0.21 MSE=0.57 PGINN=0.43 star+MSE=0.24 star+PGINN=0.24
+  [seed 17001] 27 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[18/30] seed 17001: 27 trees, top_fraction star=0.48 MSE=0.41 PGINN=0.70 star+MSE=0.52 star+PGINN=0.48
+  [seed 18001] 48 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[19/30] seed 18001: 48 trees, top_fraction star=0.15 MSE=0.40 PGINN=0.46 star+MSE=0.35 star+PGINN=0.44
+  [seed 19001] 21 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[20/30] seed 19001: 21 trees, top_fraction star=0.05 MSE=0.38 PGINN=0.24 star+MSE=0.14 star+PGINN=0.19
+  [seed 20001] 36 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[21/30] seed 20001: 36 trees, top_fraction star=0.08 MSE=0.56 PGINN=0.08 star+MSE=0.17 star+PGINN=0.11
+  [seed 21001] 29 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[22/30] seed 21001: 29 trees, top_fraction star=0.03 MSE=0.10 PGINN=0.10 star+MSE=0.10 star+PGINN=0.07
+  [seed 22001] 34 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[23/30] seed 22001: 34 trees, top_fraction star=0.12 MSE=0.21 PGINN=0.47 star+MSE=0.18 star+PGINN=0.18
+  [seed 23001] 51 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[24/30] seed 23001: 51 trees, top_fraction star=0.33 MSE=0.73 PGINN=0.80 star+MSE=0.39 star+PGINN=0.41
+  [seed 24001] 34 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[25/30] seed 24001: 34 trees, top_fraction star=0.24 MSE=0.09 PGINN=0.18 star+MSE=0.24 star+PGINN=0.21
+  [seed 25001] 58 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[26/30] seed 25001: 58 trees, top_fraction star=0.16 MSE=0.14 PGINN=0.09 star+MSE=0.16 star+PGINN=0.09
+  [seed 26001] 26 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[27/30] seed 26001: 26 trees, top_fraction star=0.04 MSE=0.04 PGINN=0.04 star+MSE=0.04 star+PGINN=0.04
+  [seed 27001] 43 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[28/30] seed 27001: 43 trees, top_fraction star=1.00 MSE=0.84 PGINN=0.79 star+MSE=1.00 star+PGINN=1.00
+  [seed 28001] 16 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[29/30] seed 28001: 16 trees, top_fraction star=0.06 MSE=0.25 PGINN=0.25 star+MSE=0.25 star+PGINN=0.25
+  [seed 29001] 33 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection-summary
+Saved 3 averaged samples.
+[30/30] seed 29001: 33 trees, top_fraction star=0.36 MSE=0.70 PGINN=0.36 star+MSE=0.45 star+PGINN=0.39
+
+Summary over 30 independent single-chromosome replicates (median 34 real trees/chromosome):
+detector              median top%  mean top%   top10%   top20%   top25%
+star ratio                  15.3%      21.3%    30.0%    56.7%    66.7%
+MSE predicted s             24.5%      31.8%    20.0%    40.0%    53.3%
+PGINN predicted s           20.4%      25.9%    30.0%    50.0%    63.3%
+star ratio + MSE            20.4%      25.5%    20.0%    50.0%    63.3%
+star ratio + PGINN          20.3%      23.9%    26.7%    50.0%    66.7%
+
+Paired Wilcoxon tests (first detector better = lower top fraction):
+  PGINN predicted s vs MSE predicted s: better 15, worse 10, tied 5; median diff -2.3 pts; W=111.0, p=0.166
+  star ratio vs PGINN predicted s: better 15, worse 9, tied 6; median diff -2.6 pts; W=105.5, p=0.204
+  star ratio vs MSE predicted s: better 19, worse 9, tied 2; median diff -7.5 pts; W=87.0, p=0.00825
+  star ratio vs star ratio + MSE: better 19, worse 4, tied 7; median diff -3.2 pts; W=54.0, p=0.0106
+  star ratio vs star ratio + PGINN: better 15, worse 6, tied 9; median diff -1.2 pts; W=75.0, p=0.159
+5 kb windows lying entirely on a single local tree: 73% (2180/3000)
+Saved LaTeX table to ../figures/tab_msprime_detection.tex
+Saved figure to ../figures/msprime_scan_detection_summary.pdf

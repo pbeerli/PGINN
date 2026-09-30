@@ -1,0 +1,2 @@
+theta: R2=0.9456 bias=-0.000792 RMSE=0.00281
+s_hat: mean=0.009874 sd=0.01606 (true s = 0 for all 80)

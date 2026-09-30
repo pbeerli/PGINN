@@ -1,0 +1,21 @@
+read 205 lines, length 3351 bp
+176 non-fully-missing lines; 108 biallelic segregating sites
+567 / 5778 site pairs incompatible with a single tree (9.8%)
+Hudson-Kaplan minimum number of recombination events, R_m = 14
+breakpoint-defining site-index pairs (genomic positions in parens):
+  sites 2,3  (chr2L:14615556-14615663)
+  sites 3,11  (chr2L:14615663-14615849)
+  sites 11,21  (chr2L:14615849-14616032)
+  sites 21,22  (chr2L:14616032-14616047)
+  sites 31,33  (chr2L:14616147-14616225)
+  sites 37,38  (chr2L:14616377-14616457)
+  sites 38,44  (chr2L:14616457-14616790)
+  sites 44,57  (chr2L:14616790-14617013)
+  sites 57,65  (chr2L:14617013-14617157)
+  sites 65,73  (chr2L:14617157-14617490)
+  sites 73,81  (chr2L:14617490-14617915)
+  sites 90,104  (chr2L:14618486-14618756)
+  sites 104,105  (chr2L:14618756-14618831)
+  sites 105,106  (chr2L:14618831-14618872)
+largest internally-consistent run of segregating sites: sites 81-103 (23 sites, chr2L:14617915-14618741)
+wrote code/data/real-adh-cache/four_gamete_matrix.png

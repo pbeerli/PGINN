@@ -1,0 +1,26 @@
+parsed 15 loci from data/adh-migrate/trees.tre; trees per locus: [1000]
+subsampled 176/176 individuals (seed 42): ['RAL-105', 'RAL-129', 'RAL-136', 'RAL-138', 'RAL-142', 'RAL-149', 'RAL-153', 'RAL-158', 'RAL-161', 'RAL-176', 'RAL-177', 'RAL-181', 'RAL-189', 'RAL-195', 'RAL-208', 'RAL-21', 'RAL-217', 'RAL-223', 'RAL-227', 'RAL-228', 'RAL-229', 'RAL-233', 'RAL-235', 'RAL-239', 'RAL-256', 'RAL-26', 'RAL-28', 'RAL-280', 'RAL-287', 'RAL-304', 'RAL-306', 'RAL-307', 'RAL-309', 'RAL-31', 'RAL-310', 'RAL-313', 'RAL-315', 'RAL-317', 'RAL-318', 'RAL-319', 'RAL-32', 'RAL-320', 'RAL-321', 'RAL-324', 'RAL-325', 'RAL-332', 'RAL-335', 'RAL-340', 'RAL-348', 'RAL-350', 'RAL-354', 'RAL-355', 'RAL-357', 'RAL-358', 'RAL-359', 'RAL-360', 'RAL-361', 'RAL-362', 'RAL-365', 'RAL-367', 'RAL-370', 'RAL-371', 'RAL-373', 'RAL-374', 'RAL-375', 'RAL-379', 'RAL-38', 'RAL-380', 'RAL-382', 'RAL-383', 'RAL-385', 'RAL-386', 'RAL-390', 'RAL-391', 'RAL-392', 'RAL-395', 'RAL-397', 'RAL-399', 'RAL-40', 'RAL-406', 'RAL-409', 'RAL-41', 'RAL-42', 'RAL-427', 'RAL-437', 'RAL-439', 'RAL-440', 'RAL-441', 'RAL-45', 'RAL-461', 'RAL-48', 'RAL-49', 'RAL-491', 'RAL-492', 'RAL-505', 'RAL-508', 'RAL-509', 'RAL-513', 'RAL-517', 'RAL-530', 'RAL-531', 'RAL-535', 'RAL-551', 'RAL-555', 'RAL-559', 'RAL-566', 'RAL-57', 'RAL-584', 'RAL-589', 'RAL-59', 'RAL-595', 'RAL-596', 'RAL-627', 'RAL-630', 'RAL-634', 'RAL-639', 'RAL-642', 'RAL-646', 'RAL-69', 'RAL-703', 'RAL-705', 'RAL-707', 'RAL-712', 'RAL-716', 'RAL-721', 'RAL-727', 'RAL-73', 'RAL-730', 'RAL-732', 'RAL-737', 'RAL-748', 'RAL-75', 'RAL-757', 'RAL-761', 'RAL-765', 'RAL-783', 'RAL-786', 'RAL-787', 'RAL-790', 'RAL-796', 'RAL-799', 'RAL-801', 'RAL-804', 'RAL-805', 'RAL-808', 'RAL-810', 'RAL-818', 'RAL-819', 'RAL-820', 'RAL-821', 'RAL-822', 'RAL-83', 'RAL-832', 'RAL-837', 'RAL-843', 'RAL-850', 'RAL-852', 'RAL-855', 'RAL-857', 'RAL-859', 'RAL-861', 'RAL-879', 'RAL-882', 'RAL-884', 'RAL-887', 'RAL-890', 'RAL-892', 'RAL-894', 'RAL-897', 'RAL-900', 'RAL-907', 'RAL-908', 'RAL-91', 'RAL-911', 'RAL-913', 'RAL-93']
+mean raw tree height across 15000 trees: 0.00773655; rescale: 1
+Loading averaged features from: data/adh-migrate/scan
+Saved 3 averaged samples.
+wrote ../figures/real_adh_migrate_scan.csv
+wrote ../figures/tab_real_data.tex
+Spearman rho(migrate Theta, MSE_theta median) = +0.960 (p=1.5e-08, 15 segments)
+Spearman rho(migrate Theta, MSE_s median) = -0.404 (p=0.14, 15 segments)
+Spearman rho(migrate Theta, PGINN_theta median) = +0.960 (p=1.5e-08, 15 segments)
+Spearman rho(migrate Theta, PGINN_s median) = +0.082 (p=0.77, 15 segments)
+  locus 1 (chr2L:14615552-14615609, 58bp): migrate_theta=0.0075  MSE(theta=0.0086, s=2.2949)  PGINN(theta=0.0094, s=1.6209)
+  locus 2 (chr2L:14615610-14615789, 180bp): migrate_theta=0.0062  MSE(theta=0.0061, s=1.7102)  PGINN(theta=0.0065, s=0.8883)
+  locus 3 (chr2L:14615790-14615945, 156bp): migrate_theta=0.0034  MSE(theta=0.0032, s=1.5106)  PGINN(theta=0.0032, s=0.4876)
+  locus 4 (chr2L:14615946-14616039, 94bp): migrate_theta=0.0145  MSE(theta=0.0167, s=0.7670)  PGINN(theta=0.0181, s=2.3163)
+  locus 5 (chr2L:14616040-14616185, 146bp): migrate_theta=0.0124  MSE(theta=0.0123, s=0.0000)  PGINN(theta=0.0173, s=3.5748)
+  locus 6 (chr2L:14616186-14616416, 231bp): migrate_theta=0.0053  MSE(theta=0.0050, s=2.3655)  PGINN(theta=0.0052, s=1.5860)
+  locus 7 (chr2L:14616417-14616637, 221bp): migrate_theta=0.0047  MSE(theta=0.0046, s=2.5340)  PGINN(theta=0.0045, s=2.0111)
+  locus 8 (chr2L:14616638-14616901, 264bp): migrate_theta=0.0032  MSE(theta=0.0040, s=2.5377)  PGINN(theta=0.0035, s=3.3645)
+  locus 9 (chr2L:14616902-14617137, 236bp): migrate_theta=0.0104  MSE(theta=0.0130, s=3.5482)  PGINN(theta=0.0147, s=3.3077)
+  locus 10 (chr2L:14617138-14617371, 234bp): migrate_theta=0.0064  MSE(theta=0.0061, s=1.8737)  PGINN(theta=0.0064, s=1.3315)
+  locus 11 (chr2L:14617372-14617804, 433bp): migrate_theta=0.0029  MSE(theta=0.0029, s=4.3771)  PGINN(theta=0.0027, s=4.5577)
+  locus 12 (chr2L:14617805-14618637, 833bp): migrate_theta=0.0047  MSE(theta=0.0045, s=1.6151)  PGINN(theta=0.0044, s=0.8914)
+  locus 13 (chr2L:14618638-14618793, 156bp): migrate_theta=0.0070  MSE(theta=0.0072, s=2.9956)  PGINN(theta=0.0075, s=2.3653)
+  locus 14 (chr2L:14618794-14618851, 58bp): migrate_theta=0.0030  MSE(theta=0.0045, s=2.7130)  PGINN(theta=0.0044, s=2.1989)
+  locus 15 (chr2L:14618852-14618902, 51bp): migrate_theta=0.0061  MSE(theta=0.0076, s=2.4659)  PGINN(theta=0.0081, s=2.1111)

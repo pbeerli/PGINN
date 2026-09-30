@@ -1,0 +1,320 @@
+Saved figure to ../figures/multiseed/recovery_10l_seed67_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed67_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-32.646750193596716), 'rmse': np.float64(149.48413556374328), 'r2': np.float64(0.5125744198124031)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-30.520800627682373), 'rmse': np.float64(120.45087046132934), 'r2': np.float64(0.6835260305500299)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0010163659482222858), 'rmse': np.float64(0.0038756169542627683), 'r2': np.float64(0.8979928986610379)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0013579924468769234), 'rmse': np.float64(0.0035921696726490472), 'r2': np.float64(0.9123680660140944)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3464893122081946), 'rmse': np.float64(0.8430504006423811), 'r2': np.float64(0.7812684443187791)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.19638335787508268), 'rmse': np.float64(0.6120180465893242), 'r2': np.float64(0.8847256132919895)}
+Saved figure to ../figures/multiseed/recovery_10l_seed68_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed68_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-23.840139419769425), 'rmse': np.float64(132.9217337691466), 'r2': np.float64(0.6146014260348232)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(19.830848652786937), 'rmse': np.float64(121.26928502039327), 'r2': np.float64(0.6792107968563617)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0006682936390788253), 'rmse': np.float64(0.0032397964905703613), 'r2': np.float64(0.9287172946619582)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.00112513454427067), 'rmse': np.float64(0.0035898017566903732), 'r2': np.float64(0.9124835598139054)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3067397655428426), 'rmse': np.float64(0.7883335399969532), 'r2': np.float64(0.8087399028801661)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.07002033624186524), 'rmse': np.float64(0.7494097316623042), 'r2': np.float64(0.8271604923766119)}
+Saved figure to ../figures/multiseed/recovery_10l_seed69_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed69_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-37.15160036042037), 'rmse': np.float64(137.8549782837798), 'r2': np.float64(0.5854632702618515)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-10.911822046689275), 'rmse': np.float64(110.40139661780358), 'r2': np.float64(0.734131280777859)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0005065267846622879), 'rmse': np.float64(0.0035021075944546565), 'r2': np.float64(0.9167071577777807)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0004402855215134732), 'rmse': np.float64(0.0037099309444069903), 'r2': np.float64(0.9065282520457513)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.36568391576020404), 'rmse': np.float64(0.7874415887640283), 'r2': np.float64(0.8091724562653941)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.1239264962155713), 'rmse': np.float64(0.6834512488382327), 'r2': np.float64(0.8562461626979605)}
+Saved figure to ../figures/multiseed/recovery_10l_seed70_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed70_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-30.38014567823274), 'rmse': np.float64(132.1987663884653), 'r2': np.float64(0.6187824255957799)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-9.46005401140192), 'rmse': np.float64(113.7840684680664), 'r2': np.float64(0.7175893792979338)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.000621794326721739), 'rmse': np.float64(0.00331546790528365), 'r2': np.float64(0.9253485291769451)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.001116821144777874), 'rmse': np.float64(0.003995444006591724), 'r2': np.float64(0.8915876371653441)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.29275693263244373), 'rmse': np.float64(0.7597699362253358), 'r2': np.float64(0.8223486251004866)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.0712535788683301), 'rmse': np.float64(0.5899121046843243), 'r2': np.float64(0.8929025873101141)}
+Saved figure to ../figures/multiseed/recovery_10l_seed71_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed71_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-13.544133624752247), 'rmse': np.float64(144.4246390279799), 'r2': np.float64(0.5450112168626294)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-13.485654433991481), 'rmse': np.float64(113.96431683654195), 'r2': np.float64(0.7166939222530228)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(0.0002790619754331755), 'rmse': np.float64(0.003122010920964226), 'r2': np.float64(0.9338061641957629)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0012458948159950523), 'rmse': np.float64(0.0036960360099936316), 'r2': np.float64(0.9072271068958773)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.23908149309703958), 'rmse': np.float64(0.7958462277960731), 'r2': np.float64(0.8050771791055027)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.15605846853281996), 'rmse': np.float64(0.6056096542417226), 'r2': np.float64(0.8871270324796071)}
+Saved figure to ../figures/multiseed/recovery_10l_seed72_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed72_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-39.00720080600878), 'rmse': np.float64(141.56066423188636), 'r2': np.float64(0.5628773685000534)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-13.065678205698346), 'rmse': np.float64(114.02466503405488), 'r2': np.float64(0.7163938013318114)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00026623784347073293), 'rmse': np.float64(0.0032770535820715934), 'r2': np.float64(0.9270683905896016)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0016613427531509445), 'rmse': np.float64(0.003950163481426843), 'r2': np.float64(0.8940309961246913)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3606383146060073), 'rmse': np.float64(0.8085270683808444), 'r2': np.float64(0.7988159754334112)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.20799428993584076), 'rmse': np.float64(0.6884933847747493), 'r2': np.float64(0.8541172615362471)}
+Saved figure to ../figures/multiseed/recovery_10l_seed73_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed73_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-32.223732021480544), 'rmse': np.float64(139.26639757529884), 'r2': np.float64(0.5769314011496571)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-5.862218132307302), 'rmse': np.float64(127.12111686888447), 'r2': np.float64(0.6475045558107106)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00047773466987766143), 'rmse': np.float64(0.0032324190698262765), 'r2': np.float64(0.9290415642637978)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0008463379311658495), 'rmse': np.float64(0.0032996739293018698), 'r2': np.float64(0.9260580731999563)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3101482802544631), 'rmse': np.float64(0.8108267217366725), 'r2': np.float64(0.7976699124590108)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.167403043020459), 'rmse': np.float64(0.6963800152732277), 'r2': np.float64(0.8507559719414814)}
+Saved figure to ../figures/multiseed/recovery_10l_seed74_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed74_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-16.324303447128095), 'rmse': np.float64(124.99999918101958), 'r2': np.float64(0.6591697532828391)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(5.070699508989228), 'rmse': np.float64(106.50745109387593), 'r2': np.float64(0.7525553368766573)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-6.796715170112898e-05), 'rmse': np.float64(0.003124732821417888), 'r2': np.float64(0.9336906927400361)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0011540372601501702), 'rmse': np.float64(0.0033508425956990462), 'r2': np.float64(0.9237470293410444)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.2286705287111544), 'rmse': np.float64(0.7620745643010091), 'r2': np.float64(0.821269242305976)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.12939922985033184), 'rmse': np.float64(0.6987181756064912), 'r2': np.float64(0.8497520881839697)}
+Saved figure to ../figures/multiseed/recovery_10l_seed75_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed75_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-39.37358385064579), 'rmse': np.float64(137.91743145886235), 'r2': np.float64(0.5850875856165928)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(29.908197405596784), 'rmse': np.float64(135.34429109519118), 'r2': np.float64(0.600425290872646)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00035713976995582574), 'rmse': np.float64(0.00314380978520718), 'r2': np.float64(0.9328785646168664)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0009621766357191209), 'rmse': np.float64(0.003318287652278866), 'r2': np.float64(0.9252214956606588)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3565120893511375), 'rmse': np.float64(0.7803077213252199), 'r2': np.float64(0.8126144178343546)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.010609887619722534), 'rmse': np.float64(0.7097382092599447), 'r2': np.float64(0.8449753582572598)}
+Saved figure to ../figures/multiseed/recovery_10l_seed76_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l_seed76_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-34.47277691190049), 'rmse': np.float64(140.86773363392362), 'r2': np.float64(0.5671462707469451)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-10.530563711734608), 'rmse': np.float64(107.47620243233624), 'r2': np.float64(0.7480335402815985)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00031292713478804765), 'rmse': np.float64(0.003307586338685519), 'r2': np.float64(0.9257030318989053)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0013170556445807758), 'rmse': np.float64(0.004112155850957156), 'r2': np.float64(0.8851614118146025)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.33266151232254443), 'rmse': np.float64(0.8050819789674214), 'r2': np.float64(0.8005267909551519)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.16062891568031248), 'rmse': np.float64(0.6647128825847115), 'r2': np.float64(0.8640207770400736)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed67_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed67_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-23.207119269629352), 'rmse': np.float64(144.53717679448812), 'r2': np.float64(0.6220799919292802)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-4.996971146753728), 'rmse': np.float64(107.29333575258306), 'r2': np.float64(0.7917494075278615)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00048314600599879965), 'rmse': np.float64(0.0025514432953507643), 'r2': np.float64(0.9588765646451946)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0009298854428704376), 'rmse': np.float64(0.002790442961434913), 'r2': np.float64(0.9508114698465386)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.24052376352779142), 'rmse': np.float64(0.7525217190321749), 'r2': np.float64(0.8437791397548974)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.14862341546491528), 'rmse': np.float64(0.694658294164841), 'r2': np.float64(0.8668799726467751)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed68_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed68_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-27.446880444013104), 'rmse': np.float64(138.98561887428667), 'r2': np.float64(0.6505536724581529)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-21.87158786226072), 'rmse': np.float64(92.53846428001546), 'r2': np.float64(0.8450879054644991)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00024800363673391256), 'rmse': np.float64(0.0024975464000440957), 'r2': np.float64(0.9605956038399677)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0006794851841752694), 'rmse': np.float64(0.00278545450373689), 'r2': np.float64(0.9509871807122945)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3032552580056641), 'rmse': np.float64(0.7745665647277887), 'r2': np.float64(0.8344922101076977)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.1662232007927308), 'rmse': np.float64(0.6879758299599072), 'r2': np.float64(0.8694288260600251)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed69_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed69_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-3.1509690696660586), 'rmse': np.float64(145.22470054802355), 'r2': np.float64(0.6184761170521675)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(0.9841125023822579), 'rmse': np.float64(102.32062815288789), 'r2': np.float64(0.8106055948527434)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(0.000787524992877628), 'rmse': np.float64(0.0025080290130952664), 'r2': np.float64(0.9602641362203778)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0004316788121266136), 'rmse': np.float64(0.002462586131661466), 'r2': np.float64(0.9616910362462738)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.11322296479838816), 'rmse': np.float64(0.7479935040560345), 'r2': np.float64(0.845653566143215)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.07399458567819814), 'rmse': np.float64(0.6486810937198771), 'r2': np.float64(0.8839183887240138)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed70_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed70_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-42.2920174736074), 'rmse': np.float64(140.58248141324856), 'r2': np.float64(0.6424776801175047)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-0.6847349414197956), 'rmse': np.float64(89.50596492997238), 'r2': np.float64(0.8550745331740527)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-1.6302451887724167e-05), 'rmse': np.float64(0.0024505586200557765), 'r2': np.float64(0.9620643318627008)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.00027988922459800303), 'rmse': np.float64(0.0022269738848749647), 'r2': np.float64(0.9686709089930028)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.4197938187422618), 'rmse': np.float64(0.8172752474401501), 'r2': np.float64(0.8157372117043472)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.1535258956889281), 'rmse': np.float64(0.7535579134276695), 'r2': np.float64(0.8433486229371179)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed71_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed71_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-32.204387035780364), 'rmse': np.float64(149.81627035378472), 'r2': np.float64(0.5939694488985412)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(7.408147262004081), 'rmse': np.float64(104.61646722685518), 'r2': np.float64(0.8020110963117556)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00044347542333418745), 'rmse': np.float64(0.0025798339843643484), 'r2': np.float64(0.9579562868109586)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0015578466738775585), 'rmse': np.float64(0.004474014226651521), 'r2': np.float64(0.8735519118427982)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3053190831493234), 'rmse': np.float64(0.7466515782966513), 'r2': np.float64(0.84620687486281)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.0974257885170922), 'rmse': np.float64(0.6368250093481034), 'r2': np.float64(0.8881229082258305)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed72_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed72_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-15.35112029218678), 'rmse': np.float64(133.13075982338995), 'r2': np.float64(0.6793748603934535)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(13.250883118006396), 'rmse': np.float64(93.13736703349738), 'r2': np.float64(0.8430762553930298)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0004134540244530592), 'rmse': np.float64(0.0028115013435349077), 'r2': np.float64(0.9500662552819987)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-5.382714259936238e-05), 'rmse': np.float64(0.002299844395672933), 'r2': np.float64(0.9665870783471495)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.195871865932425), 'rmse': np.float64(0.6963672700753115), 'r2': np.float64(0.8662241717598913)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.04658284079729828), 'rmse': np.float64(0.6763716494614253), 'r2': np.float64(0.8737964015031627)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed73_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed73_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-16.634399697830677), 'rmse': np.float64(138.66540186559044), 'r2': np.float64(0.6521620367438219)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-2.4896012659821967), 'rmse': np.float64(86.3999343207686), 'r2': np.float64(0.8649584000162444)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00013815914252132854), 'rmse': np.float64(0.002540294663132571), 'r2': np.float64(0.9592351604295073)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0003940234193052431), 'rmse': np.float64(0.0024273333233218375), 'r2': np.float64(0.9627799988638931)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.25046211461592466), 'rmse': np.float64(0.7521695186376428), 'r2': np.float64(0.8439253366594021)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.16981988945808424), 'rmse': np.float64(0.6973007939438012), 'r2': np.float64(0.8658652616251202)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed74_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed74_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-35.82637966084387), 'rmse': np.float64(139.62186815754765), 'r2': np.float64(0.6473469539429499)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(21.641450990403563), 'rmse': np.float64(100.33256757601454), 'r2': np.float64(0.8178938542333019)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0006051315984251682), 'rmse': np.float64(0.002527481736734454), 'r2': np.float64(0.9596453487799383)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(0.0004656891637743503), 'rmse': np.float64(0.0025884510780079368), 'r2': np.float64(0.9576749511286278)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.32614368770132535), 'rmse': np.float64(0.765753547188219), 'r2': np.float64(0.8382370785683956)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(0.01151104424276557), 'rmse': np.float64(0.7058944555933325), 'r2': np.float64(0.8625386867468502)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed75_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed75_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-23.440588335962307), 'rmse': np.float64(148.29201142990385), 'r2': np.float64(0.6021894814600999)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-3.183978250080779), 'rmse': np.float64(104.20364043703505), 'r2': np.float64(0.8035705803644049)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.000537383791151035), 'rmse': np.float64(0.0026506416344690225), 'r2': np.float64(0.9556167013728599)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0014663339257924165), 'rmse': np.float64(0.0050511556244983045), 'r2': np.float64(0.8388244932802794)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3021545902671071), 'rmse': np.float64(0.7620857842081321), 'r2': np.float64(0.8397829732241587)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.17467096432657667), 'rmse': np.float64(0.6076371943133406), 'r2': np.float64(0.8981432894261291)}
+Saved figure to ../figures/multiseed/recovery_10l-n20_seed76_v2.pdf
+Saved table to ../figures/multiseed/recovery_10l-n20_seed76_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-25.856377525542374), 'rmse': np.float64(138.7591552009872), 'r2': np.float64(0.6516915229296041)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-14.50121004961627), 'rmse': np.float64(93.01853624465855), 'r2': np.float64(0.8434764272505701)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00044890482257284065), 'rmse': np.float64(0.0024019401089800047), 'r2': np.float64(0.9635546693676513)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0010792183918625188), 'rmse': np.float64(0.0029816885956039626), 'r2': np.float64(0.9438380583011874)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.2800047423129006), 'rmse': np.float64(0.7545832367222204), 'r2': np.float64(0.8429220397236757)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.1838234063079417), 'rmse': np.float64(0.6899569360748065), 'r2': np.float64(0.8686757536913065)}
+Saved figure to ../figures/multiseed/recovery_1l_seed67_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed67_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-48.31654237850141), 'rmse': np.float64(208.88696980984034), 'r2': np.float64(0.1779969135189411)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-16.831021248685403), 'rmse': np.float64(158.5360643260857), 'r2': np.float64(0.5265142711852289)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0009371457795342499), 'rmse': np.float64(0.0070893804114123314), 'r2': np.float64(0.7080391279118399)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002180307151178945), 'rmse': np.float64(0.007043677134447029), 'r2': np.float64(0.71179137611352)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.2788331120974104), 'rmse': np.float64(1.2106224877568015), 'r2': np.float64(0.5979512182111972)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.06232830472086966), 'rmse': np.float64(0.9708793719313351), 'r2': np.float64(0.7414218496687013)}
+Saved figure to ../figures/multiseed/recovery_1l_seed68_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed68_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-40.21334258003415), 'rmse': np.float64(210.8765686957379), 'r2': np.float64(0.16226357128123192)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-3.0762592614533615), 'rmse': np.float64(171.5771459789501), 'r2': np.float64(0.44541307372699124)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0010572195087444126), 'rmse': np.float64(0.00672625786548442), 'r2': np.float64(0.7371819938835804)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0019875492508018787), 'rmse': np.float64(0.007436850477833707), 'r2': np.float64(0.6787181513708186)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.33785182110824663), 'rmse': np.float64(1.2581491288645836), 'r2': np.float64(0.565764306061439)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.07515823019199433), 'rmse': np.float64(1.1620588676958041), 'r2': np.float64(0.6295602903185449)}
+Saved figure to ../figures/multiseed/recovery_1l_seed69_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed69_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-37.34903710464886), 'rmse': np.float64(205.7961982931544), 'r2': np.float64(0.2021422942320037)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-37.707051941851276), 'rmse': np.float64(167.33950876041723), 'r2': np.float64(0.47246931317553775)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.00115422882962162), 'rmse': np.float64(0.007473524960598153), 'r2': np.float64(0.6755415650098915)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002455325770206751), 'rmse': np.float64(0.007618721965295793), 'r2': np.float64(0.662811821599924)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.37514002016200265), 'rmse': np.float64(1.283817892001065), 'r2': np.float64(0.5478650025975437)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.18932534155446476), 'rmse': np.float64(1.0229021861326342), 'r2': np.float64(0.7129685463655445)}
+Saved figure to ../figures/multiseed/recovery_1l_seed70_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed70_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-53.78175693596764), 'rmse': np.float64(211.5790326911355), 'r2': np.float64(0.15667300384169147)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-17.81856084814772), 'rmse': np.float64(166.73990999212066), 'r2': np.float64(0.4762429595632446)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0008635761569986975), 'rmse': np.float64(0.007212065274099182), 'r2': np.float64(0.6978466679858573)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0012593558776822999), 'rmse': np.float64(0.007147923726883145), 'r2': np.float64(0.703197257441426)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.25603665291216954), 'rmse': np.float64(1.2014249301799271), 'r2': np.float64(0.6040370456413859)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.033773041609636796), 'rmse': np.float64(1.042235680831663), 'r2': np.float64(0.7020158590163355)}
+Saved figure to ../figures/multiseed/recovery_1l_seed71_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed71_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-57.71336560601347), 'rmse': np.float64(205.72651547145873), 'r2': np.float64(0.20268251377066937)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-8.887058380998688), 'rmse': np.float64(168.4718513461723), 'r2': np.float64(0.46530583449087026)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0006638461426861843), 'rmse': np.float64(0.007078602291188731), 'r2': np.float64(0.7089262004444246)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002169820784638104), 'rmse': np.float64(0.007600086724624549), 'r2': np.float64(0.6644593152677433)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.38826912982198997), 'rmse': np.float64(1.1872094034785656), 'r2': np.float64(0.6133518535397775)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.07168165034618096), 'rmse': np.float64(1.0700543099192887), 'r2': np.float64(0.6858963970464769)}
+Saved figure to ../figures/multiseed/recovery_1l_seed72_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed72_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-59.67452556311455), 'rmse': np.float64(220.5650252958532), 'r2': np.float64(0.08351777872730592)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-28.852085944052288), 'rmse': np.float64(166.7063789281093), 'r2': np.float64(0.47645359137893095)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0014436658851430032), 'rmse': np.float64(0.00743786100941834), 'r2': np.float64(0.6786308328171871)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0027410498998805934), 'rmse': np.float64(0.007806566203767596), 'r2': np.float64(0.6459796846713214)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.39771931979516345), 'rmse': np.float64(1.2614514399821355), 'r2': np.float64(0.563481805141528)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.11535689871266239), 'rmse': np.float64(1.03140246417088), 'r2': np.float64(0.7081782844751696)}
+Saved figure to ../figures/multiseed/recovery_1l_seed73_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed73_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-60.51660263821757), 'rmse': np.float64(211.54667056657954), 'r2': np.float64(0.15693096670056095)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-7.19835877657608), 'rmse': np.float64(157.71344863200156), 'r2': np.float64(0.5314151910863305)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.001228910130427914), 'rmse': np.float64(0.006944347342478755), 'r2': np.float64(0.7198626855931205)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0018026088735481063), 'rmse': np.float64(0.007676531837125807), 'r2': np.float64(0.6576753276048455)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.44675832619595895), 'rmse': np.float64(1.243902524537621), 'r2': np.float64(0.5755427311005112)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.040135716214284696), 'rmse': np.float64(1.065871865268162), 'r2': np.float64(0.6883470268854499)}
+Saved figure to ../figures/multiseed/recovery_1l_seed74_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed74_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-6.909116223829018), 'rmse': np.float64(244.4454727625233), 'r2': np.float64(-0.12567946890031179)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-6.776340995641619), 'rmse': np.float64(162.59296062278636), 'r2': np.float64(0.5019714651345394)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0002515766842308626), 'rmse': np.float64(0.007591528146835604), 'r2': np.float64(0.6652146050936376)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0023707101633227918), 'rmse': np.float64(0.007694257571665518), 'r2': np.float64(0.656092591520448)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.1285951255207329), 'rmse': np.float64(1.2240759910508867), 'r2': np.float64(0.5889657264424102)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.055818560027195784), 'rmse': np.float64(1.0454489357512597), 'r2': np.float64(0.7001756322254638)}
+Saved figure to ../figures/multiseed/recovery_1l_seed75_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed75_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-48.98236233729177), 'rmse': np.float64(209.57518273440772), 'r2': np.float64(0.17257153857309138)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(13.466074322680557), 'rmse': np.float64(171.7535494263753), 'r2': np.float64(0.44427211364628993)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0005849429548956828), 'rmse': np.float64(0.0068483088347054645), 'r2': np.float64(0.7275575576659656)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0017252909905267095), 'rmse': np.float64(0.00767625338533356), 'r2': np.float64(0.6577001615251074)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.29613672250315476), 'rmse': np.float64(1.1888033582056414), 'r2': np.float64(0.6123129241599676)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.008587670709712177), 'rmse': np.float64(1.1467800784010782), 'r2': np.float64(0.6392373597752763)}
+Saved figure to ../figures/multiseed/recovery_1l_seed76_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l_seed76_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-51.46081531831617), 'rmse': np.float64(201.98029315030124), 'r2': np.float64(0.2314559850969954)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-41.452960025891386), 'rmse': np.float64(176.95008057082154), 'r2': np.float64(0.410135475284508)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0010082678226823987), 'rmse': np.float64(0.00717648562485722), 'r2': np.float64(0.7008205710619813)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0013650107079067873), 'rmse': np.float64(0.007141466900668382), 'r2': np.float64(0.7037332279536777)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.33801128482214793), 'rmse': np.float64(1.1786361195918051), 'r2': np.float64(0.6189159527590666)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.12638425499991823), 'rmse': np.float64(1.0444878495717402), 'r2': np.float64(0.7007266387724609)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed67_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed67_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-71.92728677173413), 'rmse': np.float64(205.73674146297654), 'r2': np.float64(0.25214722362593023)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-40.535527167859435), 'rmse': np.float64(162.47812146950884), 'r2': np.float64(0.5335746192986817)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0018487683789290795), 'rmse': np.float64(0.006730675166747542), 'r2': np.float64(0.7457696230666206)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0025772517576272656), 'rmse': np.float64(0.006616318751801216), 'r2': np.float64(0.7543351517387369)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.5533263324630953), 'rmse': np.float64(1.1478803391375025), 'r2': np.float64(0.630921461078986)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.2929122088979931), 'rmse': np.float64(1.0729303407372557), 'r2': np.float64(0.6775453744525635)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed68_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed68_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-23.28397374531), 'rmse': np.float64(211.2803087776589), 'r2': np.float64(0.21130254026063444)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-51.7574077595145), 'rmse': np.float64(164.92339126148457), 'r2': np.float64(0.5194297199754336)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.000425293002874529), 'rmse': np.float64(0.005712633228955921), 'r2': np.float64(0.8168601466000907)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002515120211930527), 'rmse': np.float64(0.00648280785495089), 'r2': np.float64(0.7641496755213897)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.31729122598818693), 'rmse': np.float64(1.061454529627697), 'r2': np.float64(0.6844062838289426)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.3009719527188734), 'rmse': np.float64(0.9911012286708765), 'r2': np.float64(0.7248550241293776)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed69_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed69_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-15.736203273561054), 'rmse': np.float64(214.63964207207823), 'r2': np.float64(0.1860227495474217)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-42.00514212110245), 'rmse': np.float64(160.23938112519426), 'r2': np.float64(0.5463395553072788)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0010044060903692028), 'rmse': np.float64(0.005837507851549145), 'r2': np.float64(0.8087659889962523)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002598081747336386), 'rmse': np.float64(0.006455163302385786), 'r2': np.float64(0.7661568536801565)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.38284203988307824), 'rmse': np.float64(1.1558858721021408), 'r2': np.float64(0.6257554633319657)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.27743191121095906), 'rmse': np.float64(0.9705597893029511), 'r2': np.float64(0.736142072645485)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed70_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed70_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-47.035134786030014), 'rmse': np.float64(195.58799290921473), 'r2': np.float64(0.32410882441378785)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-49.606501198525805), 'rmse': np.float64(165.82501161602212), 'r2': np.float64(0.5141608939383362)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0022360732244006733), 'rmse': np.float64(0.006626596742560182), 'r2': np.float64(0.7535713124210972)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0027475835664556416), 'rmse': np.float64(0.0068402973493949465), 'r2': np.float64(0.7374209088583865)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.4933470713428826), 'rmse': np.float64(1.1174934568552797), 'r2': np.float64(0.6502034386794986)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.25756171719799403), 'rmse': np.float64(0.9419419127750206), 'r2': np.float64(0.7514728717928861)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed71_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed71_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-29.768753672360972), 'rmse': np.float64(220.1939648314995), 'r2': np.float64(0.14335039458104148)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-42.18438475607023), 'rmse': np.float64(165.6740244630118), 'r2': np.float64(0.5150452245575396)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0010875511133438683), 'rmse': np.float64(0.00557235653774944), 'r2': np.float64(0.8257439075079384)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0029942794107165683), 'rmse': np.float64(0.00697006958244081), 'r2': np.float64(0.7273632436709806)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3469567091260255), 'rmse': np.float64(1.092596493543859), 'r2': np.float64(0.6656162508922119)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.2793742249506714), 'rmse': np.float64(0.9963961261548503), 'r2': np.float64(0.7219072807452787)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed72_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed72_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-29.457766202756638), 'rmse': np.float64(213.0302341142543), 'r2': np.float64(0.19818369110946665)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-41.99803857546737), 'rmse': np.float64(179.67743449628398), 'r2': np.float64(0.429600058755662)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0017845857843547903), 'rmse': np.float64(0.005887941958780788), 'r2': np.float64(0.8054473193105705)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0017447574568798647), 'rmse': np.float64(0.006268236599882048), 'r2': np.float64(0.7795038856599125)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.3145957253741525), 'rmse': np.float64(1.0908906527693092), 'r2': np.float64(0.6666595640600761)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.20252007033570174), 'rmse': np.float64(1.042645745286026), 'r2': np.float64(0.6954917182726004)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed73_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed73_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-56.09465982651282), 'rmse': np.float64(203.1645047874571), 'r2': np.float64(0.27073047735509326)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-39.3163946044302), 'rmse': np.float64(164.30767301371057), 'r2': np.float64(0.5230113046818595)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.001097909110958682), 'rmse': np.float64(0.005472378432562634), 'r2': np.float64(0.8319407488831986)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.002101493381570721), 'rmse': np.float64(0.0063757773460504305), 'r2': np.float64(0.7718731187032865)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.47886235674049127), 'rmse': np.float64(1.111460034281666), 'r2': np.float64(0.6539703926067912)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.2765381401078956), 'rmse': np.float64(0.9782918301156992), 'r2': np.float64(0.7319212367234591)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed74_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed74_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-70.12921814298093), 'rmse': np.float64(214.11554841670446), 'r2': np.float64(0.18999293404348938)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-58.72649662833549), 'rmse': np.float64(188.7675288155222), 'r2': np.float64(0.3704257205206778)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.001971129023275656), 'rmse': np.float64(0.006222404081049244), 'r2': np.float64(0.7827165741655618)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0025002665857858436), 'rmse': np.float64(0.006763913858959725), 'r2': np.float64(0.743252445981744)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.5524081449827212), 'rmse': np.float64(1.1951868451079979), 'r2': np.float64(0.5998736367799501)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.23875128132364287), 'rmse': np.float64(1.012723028941521), 'r2': np.float64(0.71271898301833)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed75_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed75_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-56.38354187038085), 'rmse': np.float64(219.16492501533057), 'r2': np.float64(0.15133850378650937)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-39.97755275622322), 'rmse': np.float64(158.2847480400866), 'r2': np.float64(0.5573397400467452)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0014630833425878854), 'rmse': np.float64(0.0057931849616955), 'r2': np.float64(0.811658958348491)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0025362144985564107), 'rmse': np.float64(0.006655725020870928), 'r2': np.float64(0.7514001166170725)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.5776806271919752), 'rmse': np.float64(1.1890476894343058), 'r2': np.float64(0.6039736303757544)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.14651621192369757), 'rmse': np.float64(0.909297714737668), 'r2': np.float64(0.7684004254852361)}
+Saved figure to ../figures/multiseed/recovery_1l-n20_seed76_v2.pdf
+Saved table to ../figures/multiseed/recovery_1l-n20_seed76_v2.csv
+{'param': '$s$ (raw)', 'loss': 'MSE', 'bias': np.float64(-65.08073579661968), 'rmse': np.float64(190.88806643667732), 'r2': np.float64(0.3562015096227168)}
+{'param': '$s$ (raw)', 'loss': 'PGINN', 'bias': np.float64(-49.025522928012215), 'rmse': np.float64(171.1969922228846), 'r2': np.float64(0.4821730411360484)}
+{'param': '$\\Theta$', 'loss': 'MSE', 'bias': np.float64(-0.0011883604831451496), 'rmse': np.float64(0.0057340008050132), 'r2': np.float64(0.8154875489999398)}
+{'param': '$\\Theta$', 'loss': 'PGINN', 'bias': np.float64(-0.0028589223997983206), 'rmse': np.float64(0.0067255323637000165), 'r2': np.float64(0.7461579815065436)}
+{'param': '$\\log(1{+}s)$', 'loss': 'MSE', 'bias': np.float64(-0.523063859365714), 'rmse': np.float64(1.1079408834185136), 'r2': np.float64(0.6561581502225327)}
+{'param': '$\\log(1{+}s)$', 'loss': 'PGINN', 'bias': np.float64(-0.24779014347463746), 'rmse': np.float64(0.9160712986667326), 'r2': np.float64(0.7649370885205127)}

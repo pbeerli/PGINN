@@ -1,0 +1,14 @@
+\begin{tabular}{lllrrrr}
+\toprule
+$n$ & Parameter & Loss & Bias (mean$\pm$SD) & RMSE (mean$\pm$SD) & $R^2$ (mean$\pm$SD) & paired $p$ \\
+\midrule
+10 & $\Theta$ & MSE & $-0.0004\pm0.0004$ & $0.0033\pm0.0002$ & $\mathbf{0.925\pm0.011}$ & \multirow{2}{*}{\textbf{0.012}} \\
+10 & $\Theta$ & \pginn & $-0.0011\pm0.0003$ & $0.0037\pm0.0003$ & $0.908\pm0.015$ &  \\
+10 & $\log(1{+}s)$ & MSE & $-0.31\pm0.05$ & $0.79\pm0.02$ & $0.806\pm0.012$ & \multirow{2}{*}{\textbf{8.1e-05}} \\
+10 & $\log(1{+}s)$ & \pginn & $-0.13\pm0.06$ & $0.67\pm0.05$ & $\mathbf{0.861\pm0.021}$ &  \\
+20 & $\Theta$ & MSE & $-0.0003\pm0.0004$ & $0.0026\pm0.0001$ & $0.959\pm0.004$ & \multirow{2}{*}{0.158} \\
+20 & $\Theta$ & \pginn & $-0.0006\pm0.0006$ & $0.0030\pm0.0010$ & $0.938\pm0.044$ &  \\
+20 & $\log(1{+}s)$ & MSE & $-0.27\pm0.08$ & $0.76\pm0.03$ & $0.842\pm0.012$ & \multirow{2}{*}{\textbf{6.5e-05}} \\
+20 & $\log(1{+}s)$ & \pginn & $-0.12\pm0.07$ & $0.68\pm0.04$ & $\mathbf{0.872\pm0.015}$ &  \\
+\bottomrule
+\end{tabular}

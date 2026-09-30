@@ -1,0 +1,9 @@
+[seed 1] 30 replicates, tree counts: [34, 26, 36, 26, 39, 16, 23, 37, 34, 39, 29, 29, 25, 42, 37, 58, 52, 19, 30, 36, 28, 26, 18, 41, 50, 26, 32, 26, 43, 30]
+Loading averaged features from: data/msprime-scan-individual
+Saved 3 averaged samples.
+Per-window spread summary (predicted s, n_reps=30):
+  median across-window mean(s)        = 47.1
+  median across-window SD of s         = 96.1
+  median 95% raw-spread band half-width = 105.4
+  median 95% SEM-based CI half-width    = 34.4
+Saved figure to ../figures/msprime_scan_individual.pdf

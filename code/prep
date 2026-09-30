@@ -1,0 +1,8 @@
+#!/bin/zsh
+# Extract feature/param/ages arrays from the simulated JSON datasets (prepare.py).
+# Writes <prefix>-features.npy / <prefix>-params.npy / <prefix>-ages.npy.
+cd "${0:A:h}" || exit 1
+template="$1"
+python prepare.py --train data/train$template   --interest 0,2 --prefix data/train$template
+python prepare.py --train data/test$template    --interest 0,2 --prefix data/test$template
+python prepare.py --train data/predict$template --interest 0,2 --prefix data/predict$template

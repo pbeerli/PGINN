@@ -1,0 +1,68 @@
+
+=== 10 loci, n=10 ===
+star_ratio alone: AUC=0.8605 PR-AUC=0.9007 (deterministic)
+MSE         : AUC=0.8285+/-0.0053  PR-AUC=0.8768+/-0.0027
+PGINN       : AUC=0.8296+/-0.0053  PR-AUC=0.8780+/-0.0080
+star+MSE    : AUC=0.8602+/-0.0002  PR-AUC=0.9009+/-0.0001
+star+PGINN  : AUC=0.8603+/-0.0009  PR-AUC=0.9005+/-0.0025
+star+MSE+PGINN: AUC=0.8602+/-0.0005  PR-AUC=0.9011+/-0.0004
+Paired t-tests (AUC, PGINN-vs-MSE variants, across the 10 seeds):
+  PGINN - MSE: mean diff=+0.0011  t=+0.562  p=0.5878
+  star+PGINN - star+MSE: mean diff=+0.0001  t=+0.168  p=0.8704
+  star+PGINN - PGINN: mean diff=+0.0306  t=+20.671  p=0.0000
+  star+MSE - MSE: mean diff=+0.0317  t=+18.779  p=0.0000
+  star+MSE+PGINN - star+PGINN: mean diff=-0.0001  t=-0.522  p=0.6145
+  star+MSE+PGINN - star+MSE: mean diff=-0.0000  t=-0.202  p=0.8445
+star+PGINN AUC exceeds star_ratio-alone (0.8605) in 5/10 seeds
+
+=== 10 loci, n=20 ===
+star_ratio alone: AUC=0.8476 PR-AUC=0.8937 (deterministic)
+MSE         : AUC=0.8114+/-0.0046  PR-AUC=0.8631+/-0.0037
+PGINN       : AUC=0.8046+/-0.0052  PR-AUC=0.8548+/-0.0053
+star+MSE    : AUC=0.8472+/-0.0002  PR-AUC=0.8933+/-0.0002
+star+PGINN  : AUC=0.8473+/-0.0003  PR-AUC=0.8933+/-0.0002
+star+MSE+PGINN: AUC=0.8471+/-0.0003  PR-AUC=0.8931+/-0.0002
+Paired t-tests (AUC, PGINN-vs-MSE variants, across the 10 seeds):
+  PGINN - MSE: mean diff=-0.0068  t=-3.295  p=0.0093
+  star+PGINN - star+MSE: mean diff=+0.0001  t=+1.054  p=0.3193
+  star+PGINN - PGINN: mean diff=+0.0427  t=+27.051  p=0.0000
+  star+MSE - MSE: mean diff=+0.0358  t=+25.821  p=0.0000
+  star+MSE+PGINN - star+PGINN: mean diff=-0.0002  t=-3.672  p=0.0051
+  star+MSE+PGINN - star+MSE: mean diff=-0.0001  t=-1.029  p=0.3303
+star+PGINN AUC exceeds star_ratio-alone (0.8476) in 1/10 seeds
+
+=== 1 locus, n=10 ===
+star_ratio alone: AUC=0.7558 PR-AUC=0.7540 (deterministic)
+MSE         : AUC=0.7441+/-0.0113  PR-AUC=0.7960+/-0.0095
+PGINN       : AUC=0.7472+/-0.0060  PR-AUC=0.8016+/-0.0127
+star+MSE    : AUC=0.7745+/-0.0032  PR-AUC=0.8147+/-0.0040
+star+PGINN  : AUC=0.7767+/-0.0031  PR-AUC=0.8178+/-0.0093
+star+MSE+PGINN: AUC=0.7758+/-0.0040  PR-AUC=0.8180+/-0.0077
+Paired t-tests (AUC, PGINN-vs-MSE variants, across the 10 seeds):
+  PGINN - MSE: mean diff=+0.0031  t=+0.970  p=0.3574
+  star+PGINN - star+MSE: mean diff=+0.0022  t=+2.841  p=0.0194
+  star+PGINN - PGINN: mean diff=+0.0294  t=+27.243  p=0.0000
+  star+MSE - MSE: mean diff=+0.0304  t=+10.838  p=0.0000
+  star+MSE+PGINN - star+PGINN: mean diff=-0.0009  t=-2.428  p=0.0381
+  star+MSE+PGINN - star+MSE: mean diff=+0.0012  t=+1.601  p=0.1439
+star+PGINN AUC exceeds star_ratio-alone (0.7558) in 10/10 seeds
+
+=== 1 locus, n=20 ===
+star_ratio alone: AUC=0.7796 PR-AUC=0.7636 (deterministic)
+MSE         : AUC=0.7852+/-0.0064  PR-AUC=0.8387+/-0.0048
+PGINN       : AUC=0.7925+/-0.0070  PR-AUC=0.8411+/-0.0082
+star+MSE    : AUC=0.8098+/-0.0022  PR-AUC=0.8543+/-0.0031
+star+PGINN  : AUC=0.8121+/-0.0022  PR-AUC=0.8541+/-0.0054
+star+MSE+PGINN: AUC=0.8119+/-0.0020  PR-AUC=0.8554+/-0.0027
+Paired t-tests (AUC, PGINN-vs-MSE variants, across the 10 seeds):
+  PGINN - MSE: mean diff=+0.0073  t=+1.922  p=0.0868
+  star+PGINN - star+MSE: mean diff=+0.0023  t=+1.902  p=0.0896
+  star+PGINN - PGINN: mean diff=+0.0197  t=+10.902  p=0.0000
+  star+MSE - MSE: mean diff=+0.0246  t=+16.278  p=0.0000
+  star+MSE+PGINN - star+PGINN: mean diff=-0.0002  t=-0.716  p=0.4923
+  star+MSE+PGINN - star+MSE: mean diff=+0.0021  t=+2.175  p=0.0577
+star+PGINN AUC exceeds star_ratio-alone (0.7796) in 10/10 seeds
+
+Saved table to ../figures/combined_detector.csv
+Saved figure to ../figures/combined_detector.pdf
+Saved LaTeX table to ../figures/tab_combined_detector.tex

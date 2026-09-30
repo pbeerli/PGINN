@@ -1,0 +1,22 @@
+  [seed 1] 34 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection
+Saved 3 averaged samples.
+[seed 1] window ranks (1 = most selected-looking):
+  star ratio          : closest-window rank   4 / 34 (score=-0.2, window center 266398bp, 16398bp from true sweep)
+  MSE predicted s     : closest-window rank   6 / 34 (score=20.7, window center 266398bp, 16398bp from true sweep)
+  PGINN predicted s   : closest-window rank   8 / 34 (score=19.0, window center 266398bp, 16398bp from true sweep)
+  [seed 1001] 37 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection
+Saved 3 averaged samples.
+[seed 1001] window ranks (1 = most selected-looking):
+  star ratio          : closest-window rank   4 / 37 (score=-0.3, window center 252677bp, 2677bp from true sweep)
+  MSE predicted s     : closest-window rank   7 / 37 (score=14.2, window center 252677bp, 2677bp from true sweep)
+  PGINN predicted s   : closest-window rank   4 / 37 (score=49.3, window center 252677bp, 2677bp from true sweep)
+  [seed 2001] 25 real distinct trees scored (not a fixed grid)
+Loading averaged features from: data/msprime-scan-detection
+Saved 3 averaged samples.
+[seed 2001] window ranks (1 = most selected-looking):
+  star ratio          : closest-window rank   8 / 25 (score=-0.2, window center 268832bp, 18832bp from true sweep)
+  MSE predicted s     : closest-window rank   6 / 25 (score=6.5, window center 268832bp, 18832bp from true sweep)
+  PGINN predicted s   : closest-window rank   1 / 25 (score=36.0, window center 268832bp, 18832bp from true sweep)
+Saved figure to ../figures/msprime_scan_detection.pdf
