@@ -14,7 +14,7 @@ the form "<int>_<index>" (it does int(name.split('_')[0])) to track which
 simulated deme a tip came from -- real "RAL-105"-style names don't parse.
 So each locus's tree is pruned (dendropy, branch-length preserving) down
 to --n individuals and those tips relabelled to "0_i", exactly the
-convention real_lct_scan.py/msprime_scan.py use; --n 176 keeps every
+convention msprime_scan.py uses; --n 176 keeps every
 tip (a no-op prune) and scores against the n=176-trained model instead
 of subsampling down to a model trained at n=10/20.
 

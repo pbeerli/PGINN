@@ -7,6 +7,7 @@ figures/tab_oneloc.tex): per regime, mean +- SD across seeds of bias,
 RMSE and R^2, plus the paired p-value (bold: p<0.05, together with the
 better R^2). Reads the per-seed compare.py tables in figures/multiseed/."""
 import csv
+import os
 from pathlib import Path
 from scipy import stats
 import numpy as np
@@ -61,7 +62,7 @@ def write_table(path, regimes):
                              f"${fmt(r['rmse'], param_name)}$ & ${r2}$ & {p_cell if i == 0 else ''} \\\\")
     lines += ["\\bottomrule", "\\end{tabular}"]
     path.write_text("\n".join(lines) + "\n")
-    print("wrote", path)
+    print("wrote", os.path.relpath(path))
 
 
 print("| regime | param | mean(PGINN-MSE) | SD(diff) | paired t | p (paired t) | PGINN wins |")

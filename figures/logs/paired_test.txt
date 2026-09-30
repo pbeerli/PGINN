@@ -15,5 +15,5 @@
 | 10l-n20 | -0.00025 | -0.00064 | 8/10 | 0.11 |
 | 1l | -0.00092 | -0.00201 | 10/10 | 0.00014 |
 | 1l-n20 | -0.00141 | -0.00252 | 9/10 | 0.00069 |
-wrote figures/tab_tenloci.tex
-wrote figures/tab_oneloc.tex
+wrote ../figures/tab_tenloci.tex
+wrote ../figures/tab_oneloc.tex

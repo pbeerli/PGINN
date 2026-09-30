@@ -19,6 +19,7 @@ needed to explain the data: sort incompatible pairs by right endpoint,
 greedily take non-overlapping ones.
 """
 import argparse
+import os
 from pathlib import Path
 
 import numpy as np
@@ -171,7 +172,7 @@ def main():
                  f"R_m = {rm} minimum recombination events")
     fig.tight_layout()
     fig.savefig(f"{out_prefix}_matrix.png", dpi=150)
-    print(f"wrote {out_prefix}_matrix.png")
+    print(f"wrote {os.path.relpath(out_prefix)}_matrix.png")
 
 
 if __name__ == "__main__":

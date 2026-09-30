@@ -23,5 +23,5 @@ sites excluded from Fixed because polymorphic in DGRP n=176: 8
   codon 193 vs dyak: dmel=C dyak=A  within-dmel class=repl
   codon 202 vs dyak: dmel=T dyak=C  within-dmel class=syn
 
-wrote figures/mcdonald_kreitman_test.csv
-wrote figures/tab_mk_test.tex
+wrote ../figures/mcdonald_kreitman_test.csv
+wrote ../figures/tab_mk_test.tex

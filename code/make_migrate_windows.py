@@ -15,8 +15,7 @@ concatenated sequence is exactly their original, unsliced Adh sequence --
 the window boundaries only need to be declared on the site-count line,
 not applied to the sequence data itself.
 
-Format verified against a known-good migrate-n infile already used in
-this codebase (../3-mcmc-comparison/datasets/migtest/infile10):
+migrate-n infile format:
   line 1: "<npop> <nloci> <title>"
   line 2: "(s<nsites>)" per locus, concatenated with spaces
   line 3 (per population): "<ninds>   <popname>"
@@ -26,12 +25,41 @@ this codebase (../3-mcmc-comparison/datasets/migtest/infile10):
 import argparse
 from pathlib import Path
 
-from real_adh_scan import read_fasta, make_windows, ADH_START, WINDOW_SIZE, DEFAULT_FASTA
 import four_gamete_test as fgt
 
 HERE = Path(__file__).resolve().parent
+DEFAULT_FASTA = HERE / "inputs" / "adh" / "dgrp_adh_205lines.fasta"
+ADH_START = 14_615_552
+WINDOW_SIZE = 300
 OUT_PATH = HERE / "data" / "real-adh-cache" / "migrate" / "infile"
 NAME_FIELD_WIDTH = 10
+
+
+def read_fasta(path):
+    names, seqs = [], []
+    name, chunks = None, []
+    for line in Path(path).read_text().splitlines():
+        if line.startswith(">"):
+            if name is not None:
+                seqs.append("".join(chunks))
+            name = line[1:].strip()
+            names.append(name)
+            chunks = []
+        else:
+            chunks.append(line.strip())
+    if name is not None:
+        seqs.append("".join(chunks))
+    return names, seqs
+
+
+def make_windows(seq_len, window_size):
+    bounds = []
+    start = 0
+    while start < seq_len:
+        end = min(start + window_size, seq_len)
+        bounds.append((start, end))
+        start = end
+    return bounds
 
 
 def drop_fully_missing(names, seqs):

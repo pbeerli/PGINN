@@ -18,4 +18,4 @@ breakpoint-defining site-index pairs (genomic positions in parens):
   sites 104,105  (chr2L:14618756-14618831)
   sites 105,106  (chr2L:14618831-14618872)
 largest internally-consistent run of segregating sites: sites 81-103 (23 sites, chr2L:14617915-14618741)
-wrote code/data/real-adh-cache/four_gamete_matrix.png
+wrote data/real-adh-cache/four_gamete_matrix.png

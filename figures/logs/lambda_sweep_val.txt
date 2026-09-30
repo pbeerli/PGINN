@@ -20,4 +20,4 @@
 | 1l-n20 | 0.2 | 0.7317 | 0.6995 | 1.257 |
 | 1l-n20 | 0.3 | 0.7278 | 0.7067 | 1.242 |
 | 1l-n20 | MSE | 0.7989 | 0.7309 | 1.189 |
-wrote figures/tab_lambda_sweep.tex
+wrote ../figures/tab_lambda_sweep.tex

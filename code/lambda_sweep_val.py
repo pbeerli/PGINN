@@ -3,6 +3,7 @@
 split (test-*), never on the independently simulated predict set. Prints a
 markdown table and writes figures/tab_lambda_sweep.tex (bold: best
 validation log(1+s) R^2 per regime)."""
+import os
 from pathlib import Path
 import numpy as np
 from compare import load_and_predict, to_natural, r2_bias_rmse, log1p_s
@@ -40,4 +41,4 @@ for regime, label in REGIMES:
     print(f"| {regime} | MSE | {r2_t:.4f} | {r2_s:.4f} | {rmse_s:.3f} |")
 tex += ["\\bottomrule", "\\end{tabular}"]
 OUT_TEX.write_text("\n".join(tex) + "\n")
-print("wrote", OUT_TEX)
+print("wrote", os.path.relpath(OUT_TEX))

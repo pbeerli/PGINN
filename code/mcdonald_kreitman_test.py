@@ -38,6 +38,7 @@ that a smaller sample missed).
 """
 import json
 import urllib.request
+import os
 from pathlib import Path
 
 from Bio import SeqIO
@@ -167,7 +168,7 @@ def main():
         f.write(f"# fisher_exact_p,{p_fisher:.6g}\n")
         f.write(f"# odds_ratio,{odds:.6g}\n")
         f.write(f"# alpha,{alpha:.6g}\n")
-    print(f"\nwrote {OUT_CSV}")
+    print(f"\nwrote {os.path.relpath(OUT_CSV)}")
 
     # tab:mk-test body; the right-hand columns are McDonald & Kreitman's (1991)
     # published counts, reproduced for comparison
@@ -179,7 +180,7 @@ def main():
            f"Polymorphic  & {Pn} & {Ps} & 2 & 42 \\\\",
            "\\bottomrule", "\\end{tabular}"]
     OUT_TEX.write_text("\n".join(tex) + "\n")
-    print(f"wrote {OUT_TEX}")
+    print(f"wrote {os.path.relpath(OUT_TEX)}")
 
 
 if __name__ == "__main__":

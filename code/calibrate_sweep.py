@@ -25,6 +25,7 @@ S_VALUES = [0.0, 1.0, 4.0, 20.0, 100.0, 400.0, 2000.0]  # population-scaled s = 
 
 
 def run_batch(theta, s, n_replicates, nind, seed=None):
+    (HERE / "data").mkdir(exist_ok=True)
     tmp = tempfile.mkdtemp(dir=HERE / "data")
     tp_path = f"{tmp}/calib_tp.txt"
     if s > 0:
