@@ -97,7 +97,9 @@ def main():
     jobs = [(i, args.loci, args.sites, args.folder, args.smax, args.nind,
               None if args.seed is None else args.seed + i, prior)
              for i in range(1, args.number + 1)]
-    with Pool(processes=cpu_count()) as pool:
+    # cores this process may use (a SLURM allocation, not the whole node)
+    ncpu = len(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else cpu_count()
+    with Pool(processes=ncpu) as pool:
         records = pool.map(run_one_sim, jobs)
 
     manifest_path = os.path.join(args.folder, "manifest.csv")
