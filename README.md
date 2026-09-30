@@ -64,20 +64,36 @@ cd code
                             # recovery, detection, msprime, adh
 ```
 
-`simulate` regenerates the simulated data sets in `code/data/` (about
-14 GB). `train` retrains all networks; it runs `TRAIN_JOBS` (default 8)
-jobs in parallel with `TRAIN_THREADS` (default 2) threads each. Training
-reproduces the downloaded networks bit for bit only with the same seed,
-thread count, CPU type and PyTorch version; otherwise the last digits of
-the results can differ. The `adh` stage runs migrate-n when `MIGRATE_NP`
-is set (`MIGRATE_NP=16 ./reproduce.sh adh`); otherwise it uses the files
-in `code/data/adh-migrate/`. `code/inputs/adh/run_migrate.slurm` is the
+`simulate` regenerates the simulated data sets in `code/data/` (about 14
+GB). `train` retrains all networks; it runs `TRAIN_JOBS` (default 8)
+jobs in parallel with `TRAIN_THREADS` (default 2) threads each. The
+`adh` stage runs migrate-n when `MIGRATE_NP` is set (`MIGRATE_NP=16
+./reproduce.sh adh`); otherwise it uses the files in
+`code/data/adh-migrate/`. `code/inputs/adh/run_migrate.slurm` is the
 same migrate-n run as a SLURM job. A full run takes a few hours on a
 16-core workstation, most of it training the n=176 networks and running
 migrate-n.
 
 Outputs go to `figures/`. Comparing them with the copies in this
 repository (for example with `git diff figures/`) checks the rebuild.
+
+### How exact is the rebuild?
+
+The simulated data sets are regenerated from fixed seeds, and with the
+downloaded networks a rebuild reproduces every table in the paper
+exactly. We checked this on a Linux cluster (Intel Xeon, PyTorch 2.14);
+only the last printed digit of a few CSV values differed.
+
+Retraining is exact only on the same hardware and software. The networks
+were trained on an Apple M4 Max with PyTorch 2.12.1 and 2 threads per
+job, and retraining there reproduces them bit for bit. On other CPUs or
+PyTorch versions, small rounding differences early in training grow, and
+each retrained network behaves like a new training run. On the Linux
+cluster this left the main result unchanged (PGINN improves `s`
+recovery, paired p about 1e-5), but paired tests with p near 0.01 and
+comparisons that rest on a single network per loss (the msprime
+detection comparisons and the `w` sweep) can change. Use the downloaded
+networks to reproduce the paper's numbers.
 
 ## License
 

@@ -66,5 +66,10 @@ Determinism
 -----------
 Simulations are seeded (simulate_sweep.py passes a per-draw seed to
 simtree.py; msprime runs take explicit seeds), and every network has a
-fixed training seed. Neural-network training on a different CPU, thread
-count or PyTorch version can still change the last digits of the results.
+fixed training seed. With the trained networks from Zenodo
+(fetch_data.sh), a rebuild reproduces every table exactly. Retraining is
+bit-identical only on the same hardware and software (the networks were
+trained on an Apple M4 Max, PyTorch 2.12.1, 2 threads per job). On another
+CPU or PyTorch version each retrained network behaves like a new training
+run: the main result is unchanged, but paired tests with p near 0.01 and
+single-network comparisons (msprime detection, w sweep) can change.
