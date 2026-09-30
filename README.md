@@ -70,9 +70,11 @@ jobs in parallel with `TRAIN_THREADS` (default 2) threads each. The
 `adh` stage runs migrate-n when `MIGRATE_NP` is set (`MIGRATE_NP=16
 ./reproduce.sh adh`); otherwise it uses the files in
 `code/data/adh-migrate/`. `code/inputs/adh/run_migrate.slurm` is the
-same migrate-n run as a SLURM job. A full run takes a few hours on a
-16-core workstation, most of it training the n=176 networks and running
-migrate-n.
+same migrate-n run as a SLURM job. On 8 cores of a Linux cluster node
+(Intel Xeon E5-2630 v2), a full run without migrate-n took about 70
+minutes: 15 to simulate, 20 to train and 30 for the analyses, most of it
+the Adh stage. Running migrate-n adds about 45 minutes with 16 MPI
+processes.
 
 Outputs go to `figures/`. Comparing them with the copies in this
 repository (for example with `git diff figures/`) checks the rebuild.
