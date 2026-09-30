@@ -44,7 +44,8 @@ yourself instead of downloading them.
 
 The 234 trained networks and their scalers (about 1 GB) and the migrate-n
 Adh genealogy sample (`trees.tre`, about 100 MB) are too large for git.
-They are archived on Zenodo (DOI to be added):
+They are archived on Zenodo,
+[doi:10.5281/zenodo.23069672](https://doi.org/10.5281/zenodo.23069672):
 
 ```
 ./fetch_data.sh

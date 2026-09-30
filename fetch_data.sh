@@ -3,7 +3,7 @@
 # (code/data/adh-migrate/) from Zenodo and check their SHA-256 sums.
 set -e
 cd "$(dirname "$0")"
-RECORD=${ZENODO_RECORD:-XXXXXXX}   # Zenodo record number, set on release
+RECORD=${ZENODO_RECORD:-23069672}   # Zenodo record, DOI 10.5281/zenodo.23069672
 URL=https://zenodo.org/records/$RECORD/files
 for f in pginn-models.tar pginn-adh-migrate.tar SHA256SUMS; do
   [ -s "$f" ] || curl -fL -o "$f" "$URL/$f?download=1"
