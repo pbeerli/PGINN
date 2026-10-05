@@ -18,6 +18,19 @@
 # now fixed:
 # 1. pick smallest time for all individual events and record which event
 #    is associated with the smallest event.f
+#
+# This copy is customized for the PGINN paper (manuscript-2): it adds
+# --timepoints (time-varying theta for the selective-sweep model), --seed,
+# --selection and the internal-node ages in the JSON output. It is kept
+# here instead of tracking the general simulator
+# (github.com/pbeerli/fractcoalsim), which does not have these options.
+#
+# updated October 5 2026: migration rates fixed as in fractcoalsim
+# commit 9f18526 (migration_matrix()). mylambda() read M[j], only the
+# first row of the -m list: "a,b" simulated M_2->1 = b and M_1->2 = a,
+# and "0,a,b,0" simulated M_2->1 = a and M_1->2 = 0. The paper uses one
+# population only, where no migration rate is read, so its results are
+# unchanged.
 # 2. assign event
 # Nov 2025 added multiple timepoints for changes of population size -- works only for a single population
 #
@@ -94,6 +107,34 @@ def connect_lineages(population, i, j, age ):
     population.pop(j)
     return population
 
+def migration_matrix(mlist, npop):
+    """Full migration matrix Mf[i][j] = M_{j->i} (forward in time: migrants
+    into population i from population j; backward, a lineage in i moves to
+    j), from the -m list in migrate's order: row by row, row i = receiving
+    population. Accepted: npop*npop values (diagonal ignored), the
+    npop*(npop-1) off-diagonal values in the same order, or one value for
+    all. For two populations "0,a,b,0" and "a,b" both mean M_2->1 = a,
+    M_1->2 = b."""
+    Mf = [[0.0] * npop for _ in range(npop)]
+    if npop < 2:
+        return Mf
+    n = len(mlist)
+    if n == 1:
+        vals = [mlist[0]] * (npop * (npop - 1))
+    elif n == npop * npop:
+        vals = [mlist[i * npop + j] for i in range(npop) for j in range(npop) if i != j]
+    elif n == npop * (npop - 1):
+        vals = list(mlist)
+    else:
+        raise SystemExit(f"-m needs 1, {npop*(npop-1)} or {npop*npop} values for {npop} populations, got {n}")
+    z = 0
+    for i in range(npop):
+        for j in range(npop):
+            if i != j:
+                Mf[i][j] = vals[z]
+                z += 1
+    return Mf
+
 #@jit(nopython=True)
 def mylambda(theta,M,k,alphas):    
     npop = len(theta)
@@ -114,7 +155,7 @@ def mylambda(theta,M,k,alphas):
     for i in range(npop):
         for j in range(npop): 
             if i != j:
-                xlambdas[z] = M[j]*k[i]
+                xlambdas[z] = M[i][j]*k[i]   # M = migration_matrix(): M_{j->i}
                 z += 1
     Y = xlambdas*np.exp(L)
     #print("k:",k)
@@ -359,7 +400,7 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--sites', type=int, default=1000, help='number of sites')
     parser.add_argument('-i', '--individuals', type=str, default="10,10", help='Number of samples for each population')    
     parser.add_argument('-t', '--theta', type=str, default="0.01,0.01", help='thetas for each population')    
-    parser.add_argument('-m', '--mig', type=str, default="0,100,100,0", help='migration rate for each population')
+    parser.add_argument('-m', '--mig', type=str, default="0,100,100,0", help='migration rates M (mutation-scaled) in migrate order, row i = receiving population: for 2 populations "0,M_2->1,M_1->2,0" (diagonal ignored) or "M_2->1,M_1->2"; one value for all')
     parser.add_argument('-a', '--alpha', type=str, default="1.0,1.0", help='alpha for each population')
     parser.add_argument('-f', '--file', type=str, default="NONE", help='treefile to be used with migdata, default is NONE which is a placeholder for sys.stdout')
     parser.add_argument('-p', '--plot', action='store_true', help='Plots density histogram of TMRCA')
@@ -423,7 +464,7 @@ if __name__ == '__main__':
     ne = [float(ki) for ki in args.theta.split(',')]
     npop = len(ne)
     #np.array([0.01,0.01]) 
-    M = [float(ki) for ki in args.mig.split(',')]
+    M = migration_matrix([float(ki) for ki in args.mig.split(',')], npop)
     #print(f"{M=}")
     #np.array([0,100.,100.,0])
     alpha = [float(ki) for ki in args.alpha.split(',')]   
