@@ -75,12 +75,25 @@ def main():
     ap.add_argument("--four-gamete", action="store_true",
                     help="variable-length loci cut at the four-gamete breakpoints "
                          "(four_gamete_test.compatible_segments) instead of a fixed grid")
+    ap.add_argument("--loci", default=None,
+                    help="explicit locus lengths in bp, comma-separated, summing to the sequence length "
+                         "(e.g. 10000,3351,10000 for Adh with 10 kb flanks); lines without data in any "
+                         "locus are dropped")
+    ap.add_argument("--start", type=int, default=ADH_START, help="chr2L position of the first site (title, log)")
     args = ap.parse_args()
 
     names, seqs = read_fasta(args.fasta)
     names, seqs = drop_fully_missing(names, seqs)
     L = len(seqs[0])
-    if args.four_gamete:
+    if args.loci:
+        lens = [int(x) for x in args.loci.split(",")]
+        if sum(lens) != L:
+            raise SystemExit(f"--loci sums to {sum(lens)}, sequence length is {L}")
+        ends = [sum(lens[:i + 1]) for i in range(len(lens))]
+        bounds = list(zip([0] + ends[:-1], ends))
+        keep = [i for i, s in enumerate(seqs) if all(s[a:b].count("N") < b - a for a, b in bounds)]
+        names, seqs = [names[i] for i in keep], [seqs[i] for i in keep]
+    elif args.four_gamete:
         _, positions, columns = fgt.biallelic_segregating_sites(names, seqs)
         incompatible = [(a, b) for a in range(len(positions)) for b in range(a + 1, len(positions))
                         if fgt.four_gamete_incompatible(columns[a], columns[b])]
@@ -93,7 +106,7 @@ def main():
 
     site_tags = " ".join(f"(s{end - start})" for start, end in bounds)
 
-    title = f"dgrp_adh_{nloci}loci_chr2L_{ADH_START}_{ADH_START + L - 1}"
+    title = f"dgrp_adh_{nloci}loci_chr2L_{args.start}_{args.start + L - 1}"
     lines = [f"1 {nloci} {title}", site_tags, f"{ninds}   RAL_Adh"]
     for n, s in zip(names, seqs):
         if len(n) > NAME_FIELD_WIDTH:
@@ -105,7 +118,7 @@ def main():
     out_path.write_text("\n".join(lines) + "\n")
 
     for wi, (start, end) in enumerate(bounds):
-        gstart, gend = ADH_START + start, ADH_START + end - 1
+        gstart, gend = args.start + start, args.start + end - 1
         print(f"  locus {wi+1:2d} (window {wi:02d}): chr2L:{gstart}-{gend} ({end-start} bp)")
     print(f"wrote {out_path}")
 

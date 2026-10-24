@@ -143,8 +143,13 @@ S_ZERO = 1.0  # a posterior tree counts as "s_hat ~ 0" when PGINN s_hat < S_ZERO
 
 
 def write_tex(rows, path):
-    """tab:real-data body: medians over posterior trees, 95% interval for s."""
+    """tab:real-data body: medians over posterior trees, 95% interval for s;
+    for tables averaged over training runs (average_runs.py) also the range
+    of the median s over the runs, in brackets."""
     def s_cell(r, tag):
+        if tag + "_s_min" in r:
+            return (f"{r[tag + '_s']:.1f} [{r[tag + '_s_min']:.1f}--{r[tag + '_s_max']:.1f}] "
+                    f"({r[tag + '_s_q025']:.0f}--{r[tag + '_s_q975']:.0f})")
         return f"{r[tag + '_s']:.0f} ({r[tag + '_s_q025']:.0f}--{r[tag + '_s_q975']:.0f})"
     tex = ["\\begin{tabular}{rrrrrrrr}", "\\toprule",
            "Seg. & bp & migrate $\\hat\\Theta$ & MSE $\\hat\\theta$ & MSE $\\hat s$ & \\pginn $\\hat\\theta$ & \\pginn $\\hat s$ & \\% $\\hat s{\\approx}0$ \\\\",
@@ -174,13 +179,33 @@ def main():
     ap.add_argument("--max-trees", type=int, default=None, help="posterior tree files: score at most this many trees per locus (random, --seed)")
     ap.add_argument("--out-tex", default="../figures/tab_real_data.tex", help="posterior tree files: write the tab:real-data body here")
     ap.add_argument("--per-tree-out", default=None, help="posterior tree files: also write every tree's prediction to this csv")
+    ap.add_argument("--input", choices=["features", "featlog"], default="features",
+                    help="featlog: score with the networks trained on log-scaled KC features (model/*-featlog.pt)")
+    ap.add_argument("--average-trees", action="store_true",
+                    help="posterior tree files: score one input per locus, the KC features averaged over its posterior "
+                         "trees (as the 10-locus training sets average over loci), instead of every tree separately")
+    ap.add_argument("--locus-regions", nargs="+", default=None, metavar="START-END",
+                    help="chr2L region of each locus in order, for the output table (default: the 15 four-gamete segments)")
+    ap.add_argument("--net-seeds", type=int, nargs="+", default=[67],
+                    help="training runs of the networks to score with (model/...-seed<N>, no suffix for 67); the features "
+                         "are computed once, and every run other than 67 writes its own --out-table and --per-tree-out, "
+                         "with -seed<N> before the extension")
     args = ap.parse_args()
+    if args.locus_regions:
+        LOCUS_REGIONS.clear()
+        LOCUS_REGIONS.update({i: tuple(map(int, r.split("-"))) for i, r in enumerate(args.locus_regions, 1)})
 
     suffix = "" if args.n == 10 else f"-n{args.n}"
-    model_mse = args.model_mse or f"model/model-mse-1l{suffix}.pt"
-    scaler_mse = args.scaler_mse or f"model/scaler-mse-1l{suffix}.npz"
-    model_pginn = args.model_pginn or f"model/model-pginn-1l{suffix}-0.1.pt"
-    scaler_pginn = args.scaler_pginn or f"model/scaler-pginn-1l{suffix}-0.1.npz"
+    fl = "-featlog" if args.input == "featlog" else ""
+    if len(args.net_seeds) > 1 and (args.model_mse or args.model_pginn):
+        raise SystemExit("--model-mse/--model-pginn name one training run; leave them out with several --net-seeds")
+    nets = {}  # training run -> [(tag, model, scaler)]
+    for seed in args.net_seeds:
+        x = "" if seed == 67 else f"-seed{seed}"
+        nets[seed] = [("MSE", args.model_mse or f"model/model-mse-1l{suffix}{fl}{x}.pt",
+                       args.scaler_mse or f"model/scaler-mse-1l{suffix}{fl}{x}.npz"),
+                      ("PGINN", args.model_pginn or f"model/model-pginn-1l{suffix}-0.1{fl}{x}.pt",
+                       args.scaler_pginn or f"model/scaler-pginn-1l{suffix}-0.1{fl}{x}.npz")]
 
     trees = parse_trees(args.besttree)
     migrate_thetas = parse_migrate_thetas(args.outfile)
@@ -215,36 +240,57 @@ def main():
     rescale = 1.0 if args.theta_target is None else (0.9 * args.theta_target) / mean_height
     print(f"mean raw tree height across {len(keys_sorted)} trees: {mean_height:.6g}; rescale: {rescale:.6g}")
 
-    entries = [newick_to_entry(pruned[k], rescale, k) for k in keys_sorted]
-
+    # features and predictions one locus at a time: holding the feature
+    # lists of all posterior trees at once needs ~60 GB at n=176
     json_dir = Path(args.json_dir)
     json_dir.mkdir(parents=True, exist_ok=True)
-    for f in json_dir.glob("*.json"):
-        f.unlink()
-    with open(json_dir / "scan.json", "w") as f:
-        json.dump(entries, f)
-
-    dataset = AveragedThetaDataset(str(json_dir), [0, 2])
-    thetas_dummy, features, _ages = dataset.__getitems__()
-    features = np.array(features)
-    group_key = np.array(thetas_dummy)[:, 1].astype(int)
-    order = np.argsort(group_key)
-    features = features[order]
-    keys_ordered = group_key[order]
+    loci_of_row, keys_parts = [], []
+    preds = {seed: {"MSE": [], "PGINN": []} for seed in nets}
+    for loc in sorted({(k if single else k // 100000) for k in keys_sorted}):
+        keys_loc = [k for k in keys_sorted if (k if single else k // 100000) == loc]
+        # --average-trees: one group key per locus, so AveragedThetaDataset
+        # averages the features of all its trees
+        entries = [newick_to_entry(pruned[k], rescale, loc * 100000 if args.average_trees else k) for k in keys_loc]
+        for f in json_dir.glob("*.json"):
+            f.unlink()
+        with open(json_dir / "scan.json", "w") as f:
+            json.dump(entries, f)
+        del entries
+        dataset = AveragedThetaDataset(str(json_dir), [0, 2])
+        thetas_dummy, features, _ages = dataset.__getitems__()
+        features = np.array(features)
+        group_key = np.array(thetas_dummy)[:, 1].astype(int)
+        order = np.argsort(group_key)
+        features = features[order]
+        keys_parts.append(group_key[order])
+        for seed, runs in nets.items():
+            for tag, model_path, scaler_path in runs:
+                pr = predict(HERE / model_path, HERE / scaler_path, features)  # columns: [theta, s]
+                pr[:, 1] = np.maximum(pr[:, 1], 0.0)  # s < 0 is outside the support
+                preds[seed][tag].append(pr)
+        del dataset, features
+    keys_ordered = np.concatenate(keys_parts)
     loci_of_row = keys_ordered if single else keys_ordered // 100000
+    for seed in nets:
+        x = "" if seed == 67 else f"-seed{seed}"
+        if len(nets) > 1:
+            print(f"== networks of training run {seed}")
+        write_outputs(args, {tag: np.vstack(v) for tag, v in preds[seed].items()}, trees, migrate_thetas,
+                      loci_of_row, keys_ordered, single,
+                      re.sub(r"(\.\w+)$", x + r"\1", args.out_table),
+                      args.per_tree_out and re.sub(r"(\.\w+)$", x + r"\1", args.per_tree_out),
+                      args.out_tex if seed == args.net_seeds[0] else "")
 
-    predictions = {}
-    for tag, model_path, scaler_path in [("MSE", model_mse, scaler_mse), ("PGINN", model_pginn, scaler_pginn)]:
-        predictions[tag] = predict(HERE / model_path, HERE / scaler_path, features)  # columns: [theta, s]
-        predictions[tag][:, 1] = np.maximum(predictions[tag][:, 1], 0.0)  # s < 0 is outside the support
 
-    if args.per_tree_out:
-        with open(args.per_tree_out, "w") as f:
+def write_outputs(args, predictions, trees, migrate_thetas, loci_of_row, keys_ordered, single,
+                  out_table, per_tree_out, out_tex):
+    if per_tree_out:
+        with open(per_tree_out, "w") as f:
             f.write("locus,tree,MSE_theta,MSE_s,PGINN_theta,PGINN_s\n")
             for i, (loc, key) in enumerate(zip(loci_of_row, keys_ordered)):
                 f.write(f"{loc},{key % 100000},{predictions['MSE'][i, 0]:.5f},{predictions['MSE'][i, 1]:.5f},"
                         f"{predictions['PGINN'][i, 0]:.5f},{predictions['PGINN'][i, 1]:.5f}\n")
-        print(f"wrote {args.per_tree_out}")
+        print(f"wrote {per_tree_out}")
 
     # one row per locus: the value itself for a single best tree; for a
     # posterior sample the median, with a 95% interval in the _q025/_q975 columns
@@ -254,17 +300,19 @@ def main():
         sel = loci_of_row == loc
         vals = {"MSE_theta": predictions["MSE"][sel, 0], "MSE_s": predictions["MSE"][sel, 1],
                 "PGINN_theta": predictions["PGINN"][sel, 0], "PGINN_s": predictions["PGINN"][sel, 1]}
-        start, end = LOCUS_REGIONS[loc]
+        # simulated calibration data sets (adh_neutral_cal) have their own segments
+        start, end = LOCUS_REGIONS.get(loc, (0, -1))
         r = {"locus": loc, "chr2L_start": start, "chr2L_end": end, "bp": end - start + 1,
-              "migrate_theta_mode": migrate_thetas.get(loc, float("nan")), "ntrees": int(sel.sum()),
+              "migrate_theta_mode": migrate_thetas.get(loc, float("nan")),
+             "ntrees": len(trees[loc]) if args.average_trees else int(sel.sum()),
              "PGINN_pct_s0": 100 * float(np.mean(vals["PGINN_s"] < S_ZERO))}
         for c in cols:
             r[c] = float(np.median(vals[c]))
             r[c + "_q025"], r[c + "_q975"] = (float(q) for q in np.quantile(vals[c], [0.025, 0.975]))
         rows.append(r)
 
-    Path(args.out_table).parent.mkdir(parents=True, exist_ok=True)
-    with open(args.out_table, "w") as f:
+    Path(out_table).parent.mkdir(parents=True, exist_ok=True)
+    with open(out_table, "w") as f:
         if single:
             f.write("locus,chr2L_start,chr2L_end,bp,migrate_theta_mode,MSE_theta,MSE_s,PGINN_theta,PGINN_s\n")
         else:
@@ -277,9 +325,9 @@ def main():
             else:
                 f.write(f"{r['ntrees']}," + ",".join(f"{r[c]:.5f},{r[c + '_q025']:.5f},{r[c + '_q975']:.5f}" for c in cols)
                         + f",{r['PGINN_pct_s0']:.1f}\n")
-    print(f"wrote {args.out_table}")
-    if args.out_tex and not single:
-        write_tex(rows, args.out_tex)
+    print(f"wrote {out_table}")
+    if out_tex and not single:
+        write_tex(rows, out_tex)
     mig = [r["migrate_theta_mode"] for r in rows]
     for c in cols:
         rho, p = spearmanr(mig, [r[c] for r in rows])

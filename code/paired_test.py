@@ -16,7 +16,7 @@ FIGURES = Path(__file__).resolve().parent.parent / "figures"
 FIG = FIGURES / "multiseed"
 SEEDS = [67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
 REGIMES = ["10l", "10l-n20", "1l", "1l-n20"]
-PARAMS = [("$\\Theta$", "theta"), ("$\\log(1{+}s)$", "s")]  # s is reported on the log(1+s) scale
+PARAMS = [("$\\theta$", "theta"), ("$\\log(1{+}s)$", "s")]  # s is reported on the log(1+s) scale
 
 
 def read_row(regime, seed, loss, param_symbol):
@@ -78,8 +78,8 @@ for regime in REGIMES:
 print("\n| regime | theta bias MSE | theta bias PGINN | PGINN lower | p (paired t) |")
 print("|---|---|---|---|---|")
 for regime in REGIMES:
-    mse = collect(regime, "MSE", "$\\Theta$")["bias"]
-    pginn = collect(regime, "PGINN", "$\\Theta$")["bias"]
+    mse = collect(regime, "MSE", "$\\theta$")["bias"]
+    pginn = collect(regime, "PGINN", "$\\theta$")["bias"]
     _, p = stats.ttest_rel(pginn, mse)
     print(f"| {regime} | {mse.mean():+.5f} | {pginn.mean():+.5f} | {(pginn < mse).sum()}/{len(SEEDS)} | {p:.2g} |")
 

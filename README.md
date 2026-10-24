@@ -2,31 +2,34 @@
 
 <img alt="logo" src="logo-pginn.png" width=25% height=25%>
 
-Code and preprint for
+Code for
 
 Peter Beerli. *Population-Genetics-Informed Neural Networks for a
-Single-Population Coalescent Under Selection.* Preprint, bioRxiv
-(DOI to be added).
+Single-Population Coalescent Under a Hard Sweep.*
 
-PGINN adds a Kullback-Leibler term to the ordinary data-fitting loss when
-training a neural network to estimate `(theta, s)` from coalescent
-genealogies simulated under a hard-sweep model. The term compares the
-coalescent rate implied by the network's predicted parameters with the
-rate implied by the true parameters. `code/train_pginn.py` implements
-the plain MSE loss (`--pginnratio 0`) and the PGINN loss
-(`--pginnratio > 0`) in one script.
+PGINN adds a penalty from coalescent theory to the ordinary data-fitting
+loss when training a neural network to estimate `(theta, s)` from
+coalescent genealogies simulated under a hard-sweep model. The default
+penalty is a Kullback-Leibler term that compares the coalescent rate
+implied by the network's predicted parameters with the rate implied by
+the true parameters. `code/train_pginn.py` implements the plain MSE loss
+(`--pginnratio 0`), the PGINN loss (`--pginnratio > 0`) and the other
+penalties (`--loss`) in one script.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
-| `paper/PGINN-preprint.pdf` | the preprint |
-| `paper/formulae.pdf` | supplementary derivation of the core equations |
+| `tutorial/` | step-by-step tutorial: simulate, train and test the networks for one regime (`tutorial.pdf`, `run_tutorial.sh`, about 2 minutes) |
 | `code/` | simulation, training and analysis scripts; `reproduce.sh` runs them all |
-| `code/inputs/adh/` | *Drosophila* Adh sequences (DGRP) and migrate-n settings |
-| `figures/` | the paper's figures, the tables as LaTeX fragments (`tab_*.tex`), and `logs/` with each script's printed output |
-| `reproducibility.txt` | maps every figure, table and number in the text to the script that makes it |
-| `fetch_data.sh` | downloads the trained networks and the migrate-n Adh output from Zenodo |
+| `code/inputs/` | *Drosophila* Adh sequences (DGRP), migrate-n settings and SLURM scripts for the cluster steps |
+| `docs/adh-data.md` | where the Adh data come from and how to rebuild them |
+| `talk/growth_scan_talk.py` | the growth-scan figure (called by `reproduce.sh growth-scan`) |
+| `reproducibility.txt` | the stages of `reproduce.sh`, the cluster steps and the output of each script |
+| `fetch_data.sh` | downloads the trained networks, the migrate-n output and the score tables from Zenodo |
+
+The earlier version of this repository, with the first preprint, is
+tagged `v1-preprint`.
 
 ## Installation
 
@@ -36,66 +39,56 @@ Python 3.10 or later.
 pip install -r requirements.txt
 ```
 
-Optional: migrate-n 6.1.11 or
-later (MPI build), only to regenerate the Adh posterior genealogies
-yourself instead of downloading them.
+Optional: migrate-n 6.1.11 or later (MPI build), only to regenerate the
+migrate-n genealogies yourself instead of downloading them.
+
+## Tutorial
+
+```
+cd tutorial
+./run_tutorial.sh        # all steps, about 70 s on a laptop
+./build.sh               # tutorial.pdf from tutorial.tex
+```
+
+The tutorial runs the core of the pipeline for one regime (10 loci,
+n = 10) with the settings of `reproduce.sh`; `tutorial.pdf` explains each
+step and maps the other scripts.
 
 ## Trained networks and migrate-n output
 
-The 234 trained networks and their scalers (about 1 GB) and the migrate-n
-Adh genealogy sample (`trees.tre`, about 100 MB) are too large for git.
-They are archived on Zenodo,
-[doi:10.5281/zenodo.23069672](https://doi.org/10.5281/zenodo.23069672):
+The trained networks, the migrate-n output and the network score tables
+are too large for git. They are archived on Zenodo,
+[doi:10.5281/zenodo.23570566](https://doi.org/10.5281/zenodo.23570566):
 
 ```
-./fetch_data.sh
+./fetch_data.sh                 # FETCH_LARGE=1 adds the 5.9 GB of chromosome genealogies
 ```
 
-This puts the networks in `code/model/` and the migrate-n output in
-`code/data/adh-migrate/`. With these files, every analysis stage below
-runs without retraining.
+This unpacks the files where `code/reproduce.sh` expects them
+(`code/model/`, `code/data/`). With these files, the analysis stages run
+without retraining and without migrate-n.
 
-## Reproducing the paper
+## Reproducing the figures and tables
 
 ```
 cd code
-./reproduce.sh all          # everything, in order
-./reproduce.sh <stage>      # one stage: simulate, train, calibration,
-                            # recovery, detection, msprime, adh
+./reproduce.sh all          # simulate ... revision, in order
+./reproduce.sh <stage>      # one stage
 ```
 
-`simulate` regenerates the simulated data sets in `code/data/` (about 14
-GB). `train` retrains all networks; it runs `TRAIN_JOBS` (default 8)
-jobs in parallel with `TRAIN_THREADS` (default 2) threads each. The
-`adh` stage runs migrate-n when `MIGRATE_NP` is set (`MIGRATE_NP=16
-./reproduce.sh adh`); otherwise it uses the files in
-`code/data/adh-migrate/`. `code/inputs/adh/run_migrate.slurm` is the
-same migrate-n run as a SLURM job. On 8 cores of a Linux cluster node
-(Intel Xeon E5-2630 v2), a full run without migrate-n took about 70
-minutes: 15 to simulate, 20 to train and 30 for the analyses, most of it
-the Adh stage. Running migrate-n adds about 45 minutes with 16 MPI
-processes.
-
-Outputs go to `figures/`. Comparing them with the copies in this
-repository (for example with `git diff figures/`) checks the rebuild.
+`reproducibility.txt` lists the stages in order, the cluster steps
+(migrate-n, simulated chromosomes) and which script writes which output.
+Outputs go to `figures/`.
 
 ### How exact is the rebuild?
 
 The simulated data sets are regenerated from fixed seeds, and with the
-downloaded networks a rebuild reproduces every table in the paper
-exactly. We checked this on a Linux cluster (Intel Xeon, PyTorch 2.14);
-only the last printed digit of a few CSV values differed.
-
-Retraining is exact only on the same hardware and software. The networks
-were trained on an Apple M4 Max with PyTorch 2.12.1 and 2 threads per
-job, and retraining there reproduces them bit for bit. On other CPUs or
-PyTorch versions, small rounding differences early in training grow, and
-each retrained network behaves like a new training run. On the Linux
-cluster this left the main result unchanged (PGINN improves `s`
-recovery, paired p about 1e-5), but paired tests with p near 0.01 and
-comparisons that rest on a single network per loss (the msprime
-detection comparisons and the `w` sweep) can change. Use the downloaded
-networks to reproduce the paper's numbers.
+downloaded networks a rebuild reproduces every table exactly. Retraining
+is exact only on the same hardware and software: the networks were
+trained on an Apple M4 Max with PyTorch 2.12.1 and 2 threads per job. On
+other CPUs or PyTorch versions, small rounding differences early in
+training grow, and each retrained network behaves like a new training
+run. Use the downloaded networks to reproduce the published numbers.
 
 ## License
 
@@ -103,4 +96,5 @@ MIT, see `LICENSE`.
 
 ## Citation
 
-Please cite the preprint (citation to be added once it is posted).
+Please cite the Zenodo record,
+[doi:10.5281/zenodo.23570566](https://doi.org/10.5281/zenodo.23570566).

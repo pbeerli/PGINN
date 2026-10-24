@@ -184,7 +184,7 @@ random-seed=OWN:20260924
 #
 # Specify the title of the run, will be overridden by title in datafile
 #    Syntax: title=title text [up to 80 characters]
-title=DGRP Adh 15-locus four-gamete segments, posterior trees
+title=DGRP Adh region, posterior trees
 #
 #
 ################################################################################

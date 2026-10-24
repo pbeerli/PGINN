@@ -46,17 +46,19 @@ def peak_halfwidth(positions, values, sweep_pos):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=1, help="msprime replicate-simulation base seed")
+    ap.add_argument("--n-reps", type=int, default=30, help="chromosomes averaged per window (the 10-loci models were trained on averages of 10)")
+    ap.add_argument("--model-suffix", default="", help="e.g. -featlog: the networks trained on log-scaled KC features")
     args = ap.parse_args()
 
-    common = dict(n=10, ne=1000.0, length=500_000.0, n_windows=100, n_reps=30,
+    common = dict(n=10, ne=1000.0, length=500_000.0, n_windows=100, n_reps=args.n_reps,
                    theta_target=0.02, seed=args.seed,
-                   model_mse="model/model-mse-10l.pt", scaler_mse="model/scaler-mse-10l.npz",
-                   model_pginn="model/model-pginn-10l-0.1.pt", scaler_pginn="model/scaler-pginn-10l-0.1.npz")
+                   model_mse=f"model/model-mse-10l{args.model_suffix}.pt", scaler_mse=f"model/scaler-mse-10l{args.model_suffix}.npz",
+                   model_pginn=f"model/model-pginn-10l-0.1{args.model_suffix}.pt", scaler_pginn=f"model/scaler-pginn-10l-0.1{args.model_suffix}.npz")
 
     print(f"=== Sweep panels (msprime seed={args.seed}): correlation(|distance|, predicted s) and peak half-width ===")
     for recomb_rate in (2e-8, 1.2e-8):
         sweep_pos, positions, results = run_scan(
-            s=0.01, recomb_rate=recomb_rate, json_dir=f"data/msprime-metrics-r{recomb_rate:g}-seed{args.seed}",
+            s=0.01, recomb_rate=recomb_rate, json_dir=f"data/msprime-metrics-r{recomb_rate:g}-seed{args.seed}" + ("" if args.n_reps == 30 else f"-reps{args.n_reps}"),
             neutral=False, **common)
         dist = np.abs(positions - sweep_pos)
         print(f"\n-- r={recomb_rate:g}/bp --")
@@ -68,7 +70,7 @@ def main():
 
     print(f"\n=== Neutral control panel (msprime seed={args.seed}): max/mean predicted s (no true sweep) ===")
     _, _, results_neutral = run_scan(
-        s=0.01, recomb_rate=2e-8, json_dir=f"data/msprime-metrics-neutral-seed{args.seed}",
+        s=0.01, recomb_rate=2e-8, json_dir=f"data/msprime-metrics-neutral-seed{args.seed}" + ("" if args.n_reps == 30 else f"-reps{args.n_reps}"),
         neutral=True, **common)
     for tag in ("MSE", "PGINN"):
         v = results_neutral[tag]

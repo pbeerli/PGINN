@@ -118,8 +118,13 @@ def run_regime(regime_name, data_stub, mse_stub, pginn_stub):
 
 
 def main():
-    rows = [run_regime(name, *stubs) for name, stubs in REGIMES.items()]
-    out_path = "../figures/variance_mechanism_table.csv"
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--stub-suffix", default="", help="e.g. -featlog: networks trained on log-scaled KC features")
+    args = ap.parse_args()
+    x = args.stub_suffix
+    rows = [run_regime(name, data, mse + x, pginn + x) for name, (data, mse, pginn) in REGIMES.items()]
+    out_path = f"../figures/variance_mechanism_table{x.replace('-', '_')}.csv"
     with open(out_path, "w") as f:
         f.write(",".join(rows[0].keys()) + "\n")
         for r in rows:
@@ -136,7 +141,7 @@ def main():
                    f"{r['mse_mean_std_worst_seed_excluded']:.2f} "
                    f"(${r['mse_pct_change_worst_seed_excluded']:+.0f}\\%$) \\\\")
     tex += ["\\bottomrule", "\\end{tabular}"]
-    tex_path = "../figures/tab_variance_mechanism.tex"
+    tex_path = f"../figures/tab_variance_mechanism{x.replace('-', '_')}.tex"
     open(tex_path, "w").write("\n".join(tex) + "\n")
     print(f"Saved LaTeX table to {tex_path}")
 

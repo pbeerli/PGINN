@@ -12,20 +12,27 @@ Y_PATH = "data/predict-sweep-1l-n176-params.npy"
 SEEDS = [67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
 
 
-def paths(seed, tag):
+def paths(seed, tag, sfx=""):
     x = "" if seed == 67 else f"-seed{seed}"
+    if sfx:  # revision networks: model-<loss>-1l-n176[-0.1]<sfx>[-seedN]
+        stub = "mse-1l-n176" if tag == "mse" else "pginn-1l-n176-0.1"
+        return f"model/model-{stub}{sfx}{x}.pt", f"model/scaler-{stub}{sfx}{x}.npz"
     if tag == "mse":
         return f"model/model-mse-1l-n176{x}.pt", f"model/scaler-mse-1l-n176{x}.npz"
     return f"model/model-pginn-1l-n176{x}-0.1.pt", f"model/scaler-pginn-1l-n176{x}-0.1.npz"
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--model-suffix", default="", help="e.g. -featlog: networks trained on log-scaled KC features")
+    sfx = ap.parse_args().model_suffix
     y_true = to_natural(np.load(Y_PATH))
     r2 = {"MSE": {"theta": [], "s": []}, "PGINN": {"theta": [], "s": []}}
     print(f"{'seed':>5} {'loss':>6} {'theta_r2':>9} {'s_r2':>9}")
     for seed in SEEDS:
         for tag, label in [("mse", "MSE"), ("pginn", "PGINN")]:
-            pred = to_natural(load_and_predict(*paths(seed, tag), X_PATH))
+            pred = to_natural(load_and_predict(*paths(seed, tag, sfx), X_PATH))
             r2_theta = r2_bias_rmse(y_true[:, 0], pred[:, 0])[2]
             r2_s = r2_bias_rmse(log1p_s(y_true[:, 1]), log1p_s(pred[:, 1]))[2]
             r2[label]["theta"].append(r2_theta)

@@ -103,12 +103,21 @@ def compatible_segments(positions, incompatible_pairs, seq_len):
     _, rev = minimum_recombination_events([(n - 1 - j, n - 1 - i) for i, j in incompatible_pairs])
     earliest = sorted(n - j for _, j in rev)
     cut_ranges = [(positions[e - 1] + 1, positions[l]) for e, l in zip(earliest, latest)]
-    cuts = [(lo + hi) // 2 for lo, hi in cut_ranges]
-    edges = [0] + cuts + [seq_len]
-    bounds = list(zip(edges[:-1], edges[1:]))
-    for start, end in bounds:
-        idx = [k for k, p in enumerate(positions) if start <= p < end]
-        assert not any((a in idx and b in idx) for a, b in incompatible_pairs), (start, end)
+    def segments(cuts):
+        edges = [0] + cuts + [seq_len]
+        return list(zip(edges[:-1], edges[1:]))
+
+    def valid(bounds):
+        site_seg = np.searchsorted([end for _, end in bounds], positions, side="right")
+        return all(site_seg[a] != site_seg[b] for a, b in incompatible_pairs)
+
+    bounds = segments([(lo + hi) // 2 for lo, hi in cut_ranges])
+    if not valid(bounds):
+        # When a range spans segregating sites, the midpoints need not be
+        # jointly valid; the forward-greedy cuts (each just before the right
+        # site of its interval) always separate every incompatible pair.
+        bounds = segments([hi for _, hi in cut_ranges])
+    assert valid(bounds)
     return bounds, cut_ranges
 
 

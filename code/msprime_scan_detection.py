@@ -92,12 +92,16 @@ def run_single_chrom_detection(n, ne, length, s, recomb_rate, n_windows, theta_t
     return sweep_pos, plot_positions, results, star_scores
 
 
-def report_rank(label, positions, scores, sweep_pos, window_width, verbose=True):
+def report_rank(label, positions, scores, sweep_pos, window_width, verbose=True, ties="min"):
     """Rank of the window closest to the true sweep site, by this score
     (1 = most selected-looking of all n_windows; higher score = more selected-like).
+    ties="min": windows with an equal score do not count against it (best
+    possible rank); ties="mid": they count half (mid-rank).
     Returns (rank, n_windows, top_fraction)."""
     closest = np.argmin(np.abs(positions - sweep_pos))
     rank = int((scores > scores[closest]).sum()) + 1
+    if ties == "mid":
+        rank += 0.5 * (int((scores == scores[closest]).sum()) - 1)
     n = len(scores)
     top_fraction = rank / n
     if verbose:

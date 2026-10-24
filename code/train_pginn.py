@@ -37,6 +37,8 @@ S_SUPPORT = (0.0, 1000.0)      # predict() bounds predictions to it
 MAX_LAMBDA = 1e12  # k(k-1)/theta_eff reaches ~3e7 at n=176, theta=0.001; KL uses only the ratio
 EPS = 1e-8
 X0 = 0.999          # must match sweep.X0
+X_MIN = 1e-4        # must match sweep.X_MIN (floor of the trajectory)
+Z_FLOOR = float(np.log(X0 * (1.0 - X_MIN) / (X_MIN * (1.0 - X0))))  # s*u/theta at which x reaches X_MIN
 MAX_EXPONENT = 50.0  # clamp s*t before exp() to avoid overflow
 
 
@@ -66,7 +68,7 @@ class MLPRegressor(nn.Module):
 
 def param_labels(out_dim):
     if out_dim == 2:
-        return [r'$\Theta$', r'$s$']
+        return [r'$\theta$', r'$s$']
     return [f'param {i}' for i in range(out_dim)]
 
 
@@ -112,16 +114,144 @@ def coalescent_kl_selection(pred_std, true_std, y_mean, y_std, ages, eps=EPS):
     return kl_per_interval.mean(dim=1)
 
 
-def train_epoch(model, loader, optimizer, device, pginnratio, y_mean, y_std):
+def genealogy_loglik(ages, theta, s):
+    """Exact log-likelihood (up to the constant sum of log k(k-1)) of the
+    coalescent-event ages under the time-varying rate k(k-1)/theta_eff(u),
+    with theta_eff(u) = theta*x(u/theta; s) floored at theta*X_MIN as in the
+    simulator. ages: (..., K) sorted descending (column j ends the interval
+    with k=j+2 lineages, which starts at column j+1, or at 0 for the last).
+    theta, s: broadcastable to ages. Uses the closed-form integrated hazard
+    H(u) = int_0^u du'/theta_eff(u')."""
+    r = s / theta
+    z = r * ages
+    zc = torch.clamp(z, max=Z_FLOOR)
+    pos = z > 1e-6
+    safe_z = torch.where(pos, z, torch.ones_like(z))
+    safe_zc = torch.where(pos, zc, torch.ones_like(zc))
+    uc = torch.where(z > Z_FLOOR, ages * Z_FLOOR / safe_z, ages)          # min(u, u_floor)
+    g = torch.where(pos, uc * torch.expm1(zc) / safe_zc, uc)              # (theta/s)*(exp(s*uc/theta)-1)
+    H = (X0 * uc + (1.0 - X0) * g) / (theta * X0) + (ages - uc) / (theta * X_MIN)
+    log_theta_eff = torch.log(theta) + np.log(X0) - torch.logaddexp(
+        torch.full_like(zc, np.log(X0)), np.log(1.0 - X0) + zc)
+    K = ages.shape[-1]
+    k = torch.arange(2, K + 2, device=ages.device, dtype=ages.dtype)
+    k_km1 = k * (k - 1)
+    H_start = torch.cat([H[..., 1:], torch.zeros_like(H[..., :1])], dim=-1)
+    return (-log_theta_eff - k_km1 * (H - H_start)).sum(dim=-1)
+
+
+def coalescent_exact_selection(pred_std, true_std, y_mean, y_std, ages):
+    """Exact-hazard alternative to coalescent_kl_selection: the difference of
+    the genealogy log-likelihoods under the true and the predicted (theta, s),
+    per interval. Averaged over loci when ages is (B, L, K) (one row per
+    locus genealogy), so for ages drawn under the true parameters it is a
+    Monte-Carlo estimate of KL(true || predicted) per interval."""
+    log_theta_hat = pred_std[:, 0] * y_std[0] + y_mean[0]
+    log_theta_true = true_std[:, 0] * y_std[0] + y_mean[0]
+    s_hat = torch.clamp(torch.expm1(pred_std[:, 1] * y_std[1] + y_mean[1]), min=0.0)
+    s_true = torch.clamp(torch.expm1(true_std[:, 1] * y_std[1] + y_mean[1]), min=0.0)
+    theta_hat = torch.exp(log_theta_hat) + MIN_THETA
+    theta_true = torch.exp(log_theta_true) + MIN_THETA
+    shape = (-1,) + (1,) * (ages.dim() - 1)
+    ll_hat = genealogy_loglik(ages, theta_hat.view(shape), s_hat.view(shape))
+    ll_true = genealogy_loglik(ages, theta_true.view(shape), s_true.view(shape))
+    diff = (ll_true - ll_hat) / ages.shape[-1]
+    return diff.mean(dim=1) if ages.dim() == 3 else diff
+
+
+GL_X16, GL_W16 = (torch.tensor(v, dtype=torch.float64) for v in np.polynomial.legendre.leggauss(16))
+LOG_X0_RATIO = float(np.log(X0 / (1.0 - X0)))  # s*u/theta at the trajectory's midpoint x = 1/2
+
+
+def log_theta_eff_torch(u, theta, s):
+    """log theta_e(u) = log(theta x(u/theta; s)), floored at theta*X_MIN (as genealogy_loglik)."""
+    z = torch.clamp(s * u / theta, max=Z_FLOOR)
+    return torch.log(theta) + np.log(X0) - torch.logaddexp(torch.full_like(z, np.log(X0)), np.log(1.0 - X0) + z)
+
+
+def coalescent_process_kl(pred_std, true_std, y_mean, y_std, ages, forward=False):
+    """KL divergence of the full time-varying coalescent process along the
+    observed genealogy (compensator form), lambda = k(k-1)/theta_e(u) under
+    the true and lambda_hat under the predicted (theta, s), per interval with
+    k lineages integrated over the interval:
+      predicted || true (default, the direction of the local penalty):
+        int [lambda_hat log(lambda_hat/lambda) - lambda_hat + lambda] du
+      true || predicted (forward=True; the expectation of the exact penalty):
+        int [lambda log(lambda/lambda_hat) - lambda + lambda_hat] du
+    summed over intervals, divided by K, averaged over loci. Zero at the
+    truth and non-negative; to second order in phi = (log theta, log(1+s))
+    both directions equal the Fisher penalty 1/2 dphi^T I dphi
+    (fisher_info.compensator_info). ages: (B, L, K) per-locus ages sorted
+    descending (or (B, K)). Each interval is cut at the trajectory
+    midpoints, +-2 widths and floors of both processes, and each piece
+    integrated with 16-point Gauss-Legendre (float64)."""
+    dt = ages.dtype
+    a = ages.double() if ages.dim() == 3 else ages.double().unsqueeze(1)          # (B, L, K)
+    log_theta_hat = (pred_std[:, 0] * y_std[0] + y_mean[0]).double()
+    log_theta_true = (true_std[:, 0] * y_std[0] + y_mean[0]).double()
+    s_hat = torch.clamp(torch.expm1((pred_std[:, 1] * y_std[1] + y_mean[1]).double()), min=0.0)
+    s_true = torch.clamp(torch.expm1((true_std[:, 1] * y_std[1] + y_mean[1]).double()), min=0.0)
+    theta_hat, theta_true = torch.exp(log_theta_hat) + MIN_THETA, torch.exp(log_theta_true) + MIN_THETA
+    v = lambda t: t.view(-1, 1, 1, 1)
+    hi = a.unsqueeze(-1)                                                        # (B, L, K, 1)
+    lo = torch.cat([a[..., 1:], torch.zeros_like(a[..., :1])], dim=-1).unsqueeze(-1)
+    cuts = []
+    for th, s in [(theta_true, s_true), (theta_hat, s_hat)]:
+        w = (th / torch.clamp(s, min=1e-12)).detach()                          # u-width of the collapse
+        for c in [LOG_X0_RATIO - 2.0, LOG_X0_RATIO, LOG_X0_RATIO + 2.0, Z_FLOOR]:
+            cuts.append(torch.minimum(torch.maximum(v(c * w).expand_as(hi), lo), hi))
+    edges, _ = torch.sort(torch.cat([lo] + cuts + [hi], dim=-1), dim=-1)      # (B, L, K, 10)
+    pa, pb = edges[..., :-1].unsqueeze(-1), edges[..., 1:].unsqueeze(-1)       # (B, L, K, 9, 1)
+    u = 0.5 * (pb - pa) * GL_X16 + 0.5 * (pb + pa)                             # (B, L, K, 9, 16)
+    v5 = lambda t: t.view(-1, 1, 1, 1, 1)
+    lte = log_theta_eff_torch(u, v5(theta_true), v5(s_true))
+    lte_hat = log_theta_eff_torch(u, v5(theta_hat), v5(s_hat))
+    if forward:
+        f = torch.exp(-lte) * (lte_hat - lte) - torch.exp(-lte) + torch.exp(-lte_hat)
+    else:
+        f = torch.exp(-lte_hat) * (lte - lte_hat) - torch.exp(-lte_hat) + torch.exp(-lte)
+    integral = (0.5 * (pb - pa).squeeze(-1) * (f * GL_W16).sum(-1)).sum(-1)    # (B, L, K)
+    K = a.shape[-1]
+    k = torch.arange(2, K + 2, dtype=torch.float64)
+    return ((k * (k - 1) * integral).sum(-1) / K).mean(dim=1).to(dt)
+
+
+def fisher_penalty(pred_std, true_std, y_mean, y_std, info):
+    """Exact-process Fisher penalty: 1/2 dphi^T I dphi in the coordinates
+    phi = (log theta, log(1+s)), with I the compensator-form Fisher
+    information of the example's genealogies at the true parameters
+    (fisher_info.py, passed in the slot of the ages, (B, 2, 2)). Uses the raw
+    network output for log(1+s), so there is no clamp at s = 0."""
+    d = (pred_std - true_std) * y_std
+    return 0.5 * torch.einsum("bi,bij,bj->b", d, info, d)
+
+
+def weighted_mse(pred, yb, s_weight):
+    """MSE with weight s_weight on the log(1+s) column, normalized so the two
+    weights average 1 (same overall scale as the plain MSE)."""
+    w = torch.tensor([2.0 / (1.0 + s_weight), 2.0 * s_weight / (1.0 + s_weight)],
+                     device=pred.device, dtype=pred.dtype)
+    return ((pred - yb) ** 2 * w).mean()
+
+
+def theory_term(loss_form):
+    return {"exact": coalescent_exact_selection, "fisher": fisher_penalty,
+            "process": coalescent_process_kl,
+            "process-fwd": lambda *a: coalescent_process_kl(*a, forward=True)}.get(loss_form, coalescent_kl_selection)
+
+
+def train_epoch(model, loader, optimizer, device, pginnratio, y_mean, y_std,
+                loss_form="local", s_weight=1.0):
     model.train()
     total_loss = mtotal = ktotal = 0.0
     mse_criterion = nn.MSELoss()
+    term = theory_term(loss_form)
     for xb, yb, ages in loader:
         xb, yb, ages = xb.to(device), yb.to(device), ages.to(device)
         optimizer.zero_grad()
         pred = model(xb)
-        mse = mse_criterion(pred, yb)
-        kl_loss = coalescent_kl_selection(pred, yb, y_mean, y_std, ages).mean()
+        mse = mse_criterion(pred, yb) if s_weight == 1.0 else weighted_mse(pred, yb, s_weight)
+        kl_loss = term(pred, yb, y_mean, y_std, ages).mean()
         loss = (1.0 - pginnratio) * mse + pginnratio * kl_loss
         loss.backward()
         optimizer.step()
@@ -133,15 +263,16 @@ def train_epoch(model, loader, optimizer, device, pginnratio, y_mean, y_std):
 
 
 @torch.no_grad()
-def eval_epoch(model, loader, device, pginnratio, y_mean, y_std):
+def eval_epoch(model, loader, device, pginnratio, y_mean, y_std, loss_form="local", s_weight=1.0):
     model.eval()
     total_loss = mtotal = ktotal = 0.0
     mse_criterion = nn.MSELoss()
+    term = theory_term(loss_form)
     for xb, yb, ages in loader:
         xb, yb, ages = xb.to(device), yb.to(device), ages.to(device)
         pred = model(xb)
-        mse = mse_criterion(pred, yb)
-        kl_loss = coalescent_kl_selection(pred, yb, y_mean, y_std, ages).mean()
+        mse = mse_criterion(pred, yb) if s_weight == 1.0 else weighted_mse(pred, yb, s_weight)
+        kl_loss = term(pred, yb, y_mean, y_std, ages).mean()
         loss = (1.0 - pginnratio) * mse + pginnratio * kl_loss
         total_loss += loss.item() * xb.size(0)
         mtotal += (1.0 - pginnratio) * mse.item() * xb.size(0)
@@ -152,7 +283,7 @@ def eval_epoch(model, loader, device, pginnratio, y_mean, y_std):
 
 def fit_model(train_loader, val_loader, in_dim, out_dim, y_mean, y_std,
               hidden_dims=(256, 256), lr=1e-3, weight_decay=1e-4,
-              epochs=100, pginnratio=0.2, device="cpu"):
+              epochs=100, pginnratio=0.2, device="cpu", loss_form="local", s_weight=1.0):
     model = MLPRegressor(in_dim, out_dim, hidden_dims).to(device)
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     y_mean_t = torch.from_numpy(y_mean).float().to(device)
@@ -161,9 +292,9 @@ def fit_model(train_loader, val_loader, in_dim, out_dim, y_mean, y_std,
     best_val, best_state, best_epoch = float("inf"), None, 0
     for epoch in range(1, epochs + 1):
         tr_loss, tr_mse, tr_kl = train_epoch(model, train_loader, optimizer, device,
-                                              pginnratio, y_mean_t, y_std_t)
+                                              pginnratio, y_mean_t, y_std_t, loss_form, s_weight)
         val_loss, val_mse, val_kl = eval_epoch(model, val_loader, device,
-                                                pginnratio, y_mean_t, y_std_t)
+                                                pginnratio, y_mean_t, y_std_t, loss_form, s_weight)
         print(f"epoch {epoch:03d}  train {tr_loss:.4f} (mse {tr_mse:.4f} kl {tr_kl:.4f})  "
               f"val {val_loss:.4f} (mse {val_mse:.4f} kl {val_kl:.4f})")
         if val_loss < best_val:
@@ -196,6 +327,17 @@ def main():
     parser.add_argument("--threads", type=int, default=2,
                         help="torch CPU threads; results are bit-reproducible only for the same seed AND thread count")
     parser.add_argument("--seed", type=int, default=67, help="random seed for init/shuffling (default 67, matches the original run)")
+    parser.add_argument("--loss", choices=["local", "exact", "fisher", "process", "process-fwd"], default="local",
+                        help="theory term: 'local' = per-interval KL of constant rates at the event ages (the paper's PGINN loss); "
+                             "'exact' = genealogy log-likelihood ratio with the exact integrated hazard; "
+                             "'fisher' = exact-process Fisher penalty (--ages-* are then the -fisher.npy matrices); "
+                             "'process' / 'process-fwd' = KL divergence of the full time-varying process along the genealogy, "
+                             "predicted || true / true || predicted (--ages-* are the -locusages.npy files)")
+    parser.add_argument("--s-weight", type=float, default=1.0,
+                        help="weight of the log(1+s) column in the MSE term relative to log(theta) (normalized; 1 = plain MSE)")
+    parser.add_argument("--input-transform", choices=["none", "featlog"], default="none",
+                        help="featlog: log-scale the age blocks of the KC features (feature_ages.featlog) before "
+                             "standardizing; stored in the scaler, and predict() applies it to raw features")
     args = parser.parse_args()
     torch.set_num_threads(args.threads)
     set_seed(args.seed)
@@ -205,6 +347,9 @@ def main():
 
     X_train, y_train, ages_train = np.load(args.x_train), np.load(args.y_train), np.load(args.ages_train)
     X_val, y_val, ages_val = np.load(args.x_val), np.load(args.y_val), np.load(args.ages_val)
+    if args.input_transform == "featlog":
+        from feature_ages import featlog
+        X_train, X_val = featlog(X_train), featlog(X_val)
 
     y_train, y_val = y_train.copy(), y_val.copy()
     y_train[:, 1] = np.log1p(y_train[:, 1])
@@ -235,12 +380,14 @@ def main():
     model, best_val, best_epoch = fit_model(
         train_loader, val_loader, in_dim, out_dim, y_mean, y_std,
         hidden_dims=tuple(args.hidden), lr=args.lr, weight_decay=args.weight_decay,
-        epochs=args.epochs, pginnratio=args.pginnratio, device=device)
+        epochs=args.epochs, pginnratio=args.pginnratio, device=device,
+        loss_form=args.loss, s_weight=args.s_weight)
     print("Best validation loss:", best_val, "at epoch", best_epoch)
 
     torch.save(model.state_dict(), args.out_model)
+    extra = {} if args.input_transform == "none" else {"input_transform": args.input_transform}
     np.savez(args.out_scaler, x_mean=x_mean, x_std=x_std, y_mean=y_mean, y_std=y_std,
-              s_transform="log1p")
+              s_transform="log1p", **extra)
     print("Saved model to", args.out_model, "and scaler to", args.out_scaler)
 
 
@@ -251,6 +398,9 @@ def predict(model_path, scaler_path, X):
     X = np.load(X) if isinstance(X, (str, os.PathLike)) else np.asarray(X)
     scaler = np.load(scaler_path, allow_pickle=True)
     assert str(scaler["s_transform"]) == "log1p", f"{scaler_path}: unexpected s link {scaler['s_transform']}"
+    if "input_transform" in scaler and str(scaler["input_transform"]) == "featlog":
+        from feature_ages import featlog
+        X = featlog(X)
     x_std = (X - scaler["x_mean"]) / scaler["x_std"]
     model = MLPRegressor(X.shape[1], scaler["y_mean"].shape[0])
     model.load_state_dict(torch.load(model_path, map_location="cpu"))

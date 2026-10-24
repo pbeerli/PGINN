@@ -3,6 +3,13 @@ __pycache__/
 .DS_Store
 code/data/
 code/model/
-pginn-models.tar
-pginn-adh-migrate.tar
+pginn-*.tar
 SHA256SUMS
+figures/
+tutorial/work/
+tutorial/*.aux
+tutorial/*.log
+tutorial/*.out
+tutorial/*.toc
+tutorial/*.fls
+tutorial/*.fdb_latexmk

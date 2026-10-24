@@ -14,6 +14,7 @@ classic Fast/Slow site (codon 193) distinguished from the other 3.
 Values are read from figures/real_adh_migrate_scan.csv
 (code/real_adh_migrate_scan.py).
 """
+import argparse
 import csv
 from pathlib import Path
 
@@ -22,9 +23,12 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ADH_START = 14_615_552
-TABLE = HERE.parent / "figures" / "real_adh_migrate_scan.csv"
+ap = argparse.ArgumentParser()
+ap.add_argument("--table", default=str(HERE.parent / "figures" / "real_adh_migrate_scan.csv"))
+ap.add_argument("--out-fig", default=str(HERE.parent / "figures" / "real_data_summary.pdf"))
+args = ap.parse_args()
 
-ROWS = list(csv.DictReader(open(TABLE)))
+ROWS = list(csv.DictReader(open(args.table)))
 
 # codon, (genomic start,end), amino-acid change; codon 193 = Kreitman's Fast/Slow site
 AA_SITES = [
@@ -111,5 +115,5 @@ for (codon, (lo, hi), aa, is_kreitman), y_off in zip(AA_SITES, label_offsets):
 
 fig.text(0.01, 0.01, "* Kreitman (1983) Fast/Slow site", fontsize=6.5, color="firebrick")
 
-fig.savefig(HERE.parent / "figures" / "real_data_summary.pdf", bbox_inches="tight")
-print("wrote figures/real_data_summary.pdf")
+fig.savefig(args.out_fig, bbox_inches="tight")
+print("wrote", args.out_fig)

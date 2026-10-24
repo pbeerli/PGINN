@@ -1,75 +1,119 @@
 Reproducibility
 ================
 
-Every figure and table in the paper is produced by code/reproduce.sh:
+code/reproduce.sh produces every figure and table, one stage at a time,
+in this order:
 
+  ./fetch_data.sh                 # from the repository root: trained networks,
+                                  # migrate-n output and score tables from Zenodo
+                                  # (FETCH_LARGE=1 adds the chromosome
+                                  # genealogies, 5.9 GB)
   cd code
-  ./reproduce.sh all          # or one stage at a time, in this order:
-  ./reproduce.sh simulate     # simulated datasets (seeded)
-  ./reproduce.sh train        # all networks; TRAIN_JOBS=8 TRAIN_THREADS=2 by default
+  ./reproduce.sh simulate        # simulated data sets of the first networks (seeded)
+  ./reproduce.sh train            # first networks; TRAIN_JOBS=8 TRAIN_THREADS=2 by default
   ./reproduce.sh calibration
   ./reproduce.sh recovery
-  ./reproduce.sh detection
-  ./reproduce.sh msprime
   MIGRATE_NP=16 ./reproduce.sh adh
+  ./reproduce.sh revision-simulate   # log-scaled features, event ages, nested design
+  ./reproduce.sh revision-train      # main networks, 10 training runs; weight selection; nested design
+  ./reproduce.sh revision            # penalty comparison, MLE, checks; calls revision-featlog
+  ./reproduce.sh chrom-simulate      # n=100 training sets
+  ./reproduce.sh chrom-train
+  ./reproduce.sh chrom               # needs data/chrom-n100 (see below)
+  ./reproduce.sh growth-scan
+  DGRP_TAR=... MIGRATE_NP=16 ./reproduce.sh adh-flanks
+  ./reproduce.sh adh-runs            # needs the score tables of all 10 training runs (see below)
 
-Tables are written as LaTeX fragments (figures/tab_*.tex) that the paper
-includes directly, so the typeset numbers are the scripts' output. Numbers
-quoted in the running text are printed by the scripts named below; each
-script's output is kept in figures/logs/<script>.txt.
+"./reproduce.sh all" runs only the stages from simulate to revision; the
+chromosome and Adh stages after it need migrate-n runs on a cluster.
+With the files from fetch_data.sh, the training and migrate-n steps can be
+skipped: the networks, the migrate-n output and the score tables are in
+place, and each stage only rebuilds its figures and tables.
 
-Paper output                          Stage        Script -> file
-------------------------------------  -----------  ----------------------------------------------
-Table: sweep calibration (tab:calib)   calibration  calibrate_sweep.py -> tab_calib.tex
-Table: star ratio by n (appendix)      calibration  star_ratio_appendix.py -> tab_starratio.tex
-Neutral-limit check (Results text)     recovery     neutral_limit.py (log)
-Figures: recovery, 10 loci / 1 locus,  recovery     compare.py, seed 67 -> recovery_{10l,1l,10l_n20,1l_n20}.pdf
-  n=10 (main) and n=20 (appendix)
-Tables: recovery (tab:tenloci,         recovery     compare.py (10 seeds) + paired_test.py ->
-  tab:oneloc) and paired tests                        tab_tenloci.tex, tab_oneloc.tex
-Table: w sweep (tab:lambda-sweep)      recovery     lambda_sweep_val.py -> tab_lambda_sweep.tex
-w=1 check (Discussion text)            recovery     w1_check.py (log)
-n=176 recovery and paired test (text)  recovery     eval_n176.py (log)          
-Figure + table: detection ROC/AUC      detection    detect_selection.py -> detection_roc.pdf, tab_detection.tex
-Figure + table: combined detector      detection    combined_detector.py -> combined_detector.pdf,
-                                                      tab_combined_detector.tex
-Table: seed disagreement               detection    variance_mechanism.py -> tab_variance_mechanism.tex
-  (tab:variance-mechanism)
-Figure: msprime scan (fig:msprime)     msprime      msprime_scan.py -> msprime_scan.pdf
-msprime correlations / half-widths     msprime      msprime_metrics.py, seeds 1-3 (log)
-Figure: per-replicate msprime scan     msprime      msprime_scan_individual.py -> msprime_scan_individual.pdf
-Table + figure: single-chromosome      msprime      msprime_scan_detection_summary.py (with the star ratio +
-  detection (tab:msprime-detection)                   network classifiers of msprime_scan_detection_combined.py) ->
-                                                      tab_msprime_detection.tex, msprime_scan_detection_summary.pdf
-Figure: single-chromosome traces       msprime      msprime_scan_detection.py -> msprime_scan_detection.pdf
-Window-size / recombination checks     msprime      msprime_scan_singlechrom.py, 4 settings (log)
-  (text)
-Four-gamete segments (text)            adh          four_gamete_test.py, make_migrate_windows.py (log)
-migrate-n posterior genealogies        adh          migrate-n-mpi with code/inputs/adh/parmfile
-                                                      (fixed random seed, 16 MPI processes)
-Table + figure: Adh (tab:real-data,    adh          real_adh_migrate_scan.py -> tab_real_data.tex,
-  fig:real-data), Spearman rho (text)                 real_adh_migrate_scan.csv; real_data_summary_fig.py ->
-                                                      real_data_summary.pdf
-Adh out-of-distribution check (text)   adh          adh_ood_check.py (log)
-Table: McDonald-Kreitman (tab:mk-test) adh          mcdonald_kreitman_test.py -> tab_mk_test.tex
+Outputs go to figures/. Tables are written as LaTeX fragments
+(figures/tab_*.tex); each script's printed output is kept in
+figures/logs/<script>.txt.
+
+The folder tutorial/ walks through the core of the pipeline (simulate,
+features, training, test) for one regime; see tutorial/tutorial.pdf.
+
+Cluster steps (SLURM scripts in code/inputs/, submitted from code/)
+-------------------------------------------------------------------
+migrate-n, Adh            inputs/adh/run_migrate.slurm: the 15 four-gamete
+                          segments, 1000 posterior genealogies per segment
+                          (same as MIGRATE_NP=16 ./reproduce.sh adh)
+Adh neutral calibration   inputs/adh/adh_neutral_cal.slurm (array 1-50):
+                          adh_neutral_sim.py -> four-gamete segments ->
+                          migrate-n -> data/adh-neutral-cal/rep<i>/
+Adh scores, 10 runs       inputs/adh/adh_rescore_seeds.slurm (array 1-52,
+                          REAL_DIR = the Adh migrate-n directory): scores the
+                          calibration replicates, the 15 Adh segments and Adh
+                          with its flanks with the n=176 networks of training
+                          runs 67-76
+Simulated chromosomes     inputs/chrom/chrom_pipeline.slurm with NSAMP=100,
+                          WINDOW_BP=10000, OUTDIR=data/chrom-n100 and
+                          KIND = sweep, sweep-s20, sweep-s50, neutral
+                          (constant prior) and sweep, neutral (growth prior),
+                          100 replicates each: msprime -> migrate-n -> scores
+                          of training run 67
+Chromosome scores         inputs/chrom/rescore_seeds.slurm: scores of
+                          training runs 68-76
+
+Outputs by stage
+----------------
+Stage             Script -> output in figures/
+----------------  -----------------------------------------------------------
+calibration       calibrate_sweep.py -> tab_calib.tex
+                  star_ratio_appendix.py -> tab_starratio.tex
+recovery          lambda_sweep_val.py -> tab_lambda_sweep.tex
+revision          nested_eval.py -> tab_nested_main_v3.tex, tab_nested_detection_main.tex,
+                    tab_nested_recovery.tex, tab_nested_detection.tex, tab_binned_errors.tex
+                  variant_sweep_val.py -> tab_variant_sweep.tex
+                  mle_check.py -> tab_mle_optimizer.tex, tab_mle_exact.tex, mle_profile_neutral.pdf
+                  discretization_check.py -> tab_discretization.tex, tab_x0_xmin.tex
+                  asymmetry_fig.py -> asymmetry.pdf
+                  w1_diagnostic.py, fisher_check.py, process_kl_check.py,
+                    penalty_share.py, ages_regression.py, loss_timing.py (logs)
+revision-featlog  compare.py, run 67 -> recovery_{10l,10l_n20,1l,1l_n20}_featlog.pdf
+                  combined_detector.py -> tab_combined_detector_featlog.tex,
+                    combined_detector_featlog.pdf
+                  variance_mechanism.py -> tab_variance_mechanism_featlog.tex
+                  robustness_demography.py -> tab_robustness_demography_featlog.tex
+                  eval_n176.py (log eval_n176_featlog.txt)
+chrom             chrom_profile_fig.py -> chrom_profile.pdf
+                  chrom_fig.py -> chrom_by_s.pdf
+                  chrom_network_check.py, chrom_pipeline_summary.py (logs)
+growth-scan       talk/growth_scan_talk.py -> growth_scan.pdf
+adh               four_gamete_test.py, make_migrate_windows.py, adh_ood_check.py (logs)
+                  mcdonald_kreitman_test.py -> tab_mk_test.tex
+adh-flanks,       real_adh_migrate_scan.py (run 67), then average_runs.py,
+adh-runs            adh_flanks_fig.py -> adh_flanks.pdf, tab_adh_flanks.tex
+adh-runs          average_runs.py, real_data_summary_fig.py -> real_data_summary_featlog.pdf,
+                    tab_real_data_featlog.tex
+                  adh_neutral_cal_summary.py -> tab_adh_neutral_cal_featlog.tex
 
 Inputs
 ------
-code/inputs/adh/dgrp_adh_205lines.fasta   Adh region of the 205 DGRP Freeze 2.0 lines (Huang et al. 2014);
+code/inputs/adh/dgrp_adh_205lines.fasta   Adh region of the 205 DGRP lines as released by the
+                                          Drosophila Genome Nexus (Lack et al. 2015; docs/adh-data.md);
                                           29 lines without data at Adh are dropped, leaving 176
-code/inputs/adh/parmfile                  migrate-n settings for the Adh posterior sample
-code/inputs/adh/run_migrate.slurm         the same run as a SLURM job (16 MPI ranks)
+code/inputs/adh/parmfile                  migrate-n settings for the Adh posterior sample (also used
+                                          for the flanks and the neutral calibration, with their own
+                                          random seeds)
+code/inputs/chrom/parmfile[-growth]       migrate-n settings for the simulated chromosomes
+DGRP_TAR                                  dgrp_Chr2L.tar of the Drosophila Genome Nexus, for the
+                                          10 kb flanks of Adh (docs/adh-data.md)
 The McDonald-Kreitman outgroup sequences (D. simulans, D. yakuba) are
 fetched from NCBI by accession in mcdonald_kreitman_test.py.
 
 Determinism
 -----------
 Simulations are seeded (simulate_sweep.py passes a per-draw seed to
-simtree.py; msprime runs take explicit seeds), and every network has a
-fixed training seed. With the trained networks from Zenodo
-(fetch_data.sh), a rebuild reproduces every table exactly. Retraining is
-bit-identical only on the same hardware and software (the networks were
-trained on an Apple M4 Max, PyTorch 2.12.1, 2 threads per job). On another
-CPU or PyTorch version each retrained network behaves like a new training
-run: the main result is unchanged, but paired tests with p near 0.01 and
-single-network comparisons (msprime detection, w sweep) can change.
+simtree.py; msprime runs and migrate-n runs take explicit seeds), and
+every network has a fixed training seed (training runs 67-76). With the
+trained networks and score tables from Zenodo (fetch_data.sh), a rebuild
+reproduces every table exactly. Retraining is bit-identical only on the
+same hardware and software (the networks were trained on an Apple M4 Max,
+PyTorch 2.12.1, 2 threads per job); on another CPU or PyTorch version each
+retrained network behaves like a new training run.
+migrate-n runs were made with version 6.1.11.

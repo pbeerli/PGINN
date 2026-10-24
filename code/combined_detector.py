@@ -143,32 +143,34 @@ def main():
     ap.add_argument("--out-table", default="../figures/combined_detector.csv")
     ap.add_argument("--out-fig", default="../figures/combined_detector.pdf")
     ap.add_argument("--out-tex", default="../figures/tab_combined_detector.tex")
+    ap.add_argument("--stub-suffix", default="", help="e.g. -featlog: networks trained on log-scaled KC features")
     args = ap.parse_args()
+    x = args.stub_suffix
 
     rows = []
     evaluate_regime(
         "10 loci, n=10",
         "data/predict-neutral-10l-features.npy", "data/predict-sweep-10l-features.npy",
         "data/predict-neutral-10l-ages.npy", "data/predict-sweep-10l-ages.npy",
-        "mse-10l", "pginn-10l-0.1", rows)
+        "mse-10l" + x, "pginn-10l-0.1" + x, rows)
 
     evaluate_regime(
         "10 loci, n=20",
         "data/predict-neutral-10l-n20-features.npy", "data/predict-sweep-10l-n20-features.npy",
         "data/predict-neutral-10l-n20-ages.npy", "data/predict-sweep-10l-n20-ages.npy",
-        "mse-10l-n20", "pginn-10l-n20-0.1", rows)
+        "mse-10l-n20" + x, "pginn-10l-n20-0.1" + x, rows)
 
     evaluate_regime(
         "1 locus, n=10",
         "data/predict-neutral-1l-features.npy", "data/predict-sweep-1l-features.npy",
         "data/predict-neutral-1l-ages.npy", "data/predict-sweep-1l-ages.npy",
-        "mse-1l", "pginn-1l-0.1", rows)
+        "mse-1l" + x, "pginn-1l-0.1" + x, rows)
 
     evaluate_regime(
         "1 locus, n=20",
         "data/predict-neutral-1l-n20-features.npy", "data/predict-sweep-1l-n20-features.npy",
         "data/predict-neutral-1l-n20-ages.npy", "data/predict-sweep-1l-n20-ages.npy",
-        "mse-1l-n20", "pginn-1l-n20-0.1", rows)
+        "mse-1l-n20" + x, "pginn-1l-n20-0.1" + x, rows)
 
     with open(args.out_table, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=["regime", "variant", "seed", "auc", "pr_auc"])

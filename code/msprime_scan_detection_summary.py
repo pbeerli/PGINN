@@ -40,12 +40,16 @@ def main():
     ap.add_argument("--json-dir", default="data/msprime-scan-detection-summary")
     ap.add_argument("--out-fig", default="../figures/msprime_scan_detection_summary.pdf")
     ap.add_argument("--out-tex", default="../figures/tab_msprime_detection.tex")
+    ap.add_argument("--stub-suffix", default="", help="e.g. -featlog, for the combined classifiers' networks")
+    ap.add_argument("--ties", choices=["min", "mid"], default="min",
+                    help="rank of the sweep tree among equal scores: best possible (min) or mid-rank")
     args = ap.parse_args()
+    n_tied = {}
 
     # star ratio + network s_hat, a logistic classifier per training seed fitted on
     # our own 1-locus, n=10 predict set and applied unchanged to the msprime trees
     combos = {}
-    for tag, stub in [("MSE", "mse-1l"), ("PGINN", "pginn-1l-0.1")]:
+    for tag, stub in [("MSE", "mse-1l" + args.stub_suffix), ("PGINN", "pginn-1l-0.1" + args.stub_suffix)]:
         combos[tag] = fit_combined_classifiers(
             "data/predict-neutral-1l-features.npy", "data/predict-sweep-1l-features.npy",
             "data/predict-neutral-1l-ages.npy", "data/predict-sweep-1l-ages.npy", stub)
@@ -64,8 +68,10 @@ def main():
                       combined_score(combos["MSE"], star_scores, results["MSE"]),
                       combined_score(combos["PGINN"], star_scores, results["PGINN"])]
         for label, scores in zip(labels, scores_all):
-            _, _, frac = report_rank(label, positions, scores, sweep_pos, None, verbose=False)
+            _, _, frac = report_rank(label, positions, scores, sweep_pos, None, verbose=False, ties=args.ties)
             fractions[label].append(frac)
+            closest = np.argmin(np.abs(positions - sweep_pos))
+            n_tied[label] = n_tied.get(label, 0) + int((scores == scores[closest]).sum()) - 1
         print(f"[{j+1}/{args.n_replicates}] seed {seed}: {len(positions)} trees, "
               f"top_fraction star={fractions['star ratio'][-1]:.2f} "
               f"MSE={fractions['MSE predicted s'][-1]:.2f} "
@@ -73,6 +79,8 @@ def main():
               f"star+MSE={fractions['star ratio + MSE'][-1]:.2f} "
               f"star+PGINN={fractions['star ratio + PGINN'][-1]:.2f}")
 
+    print(f"ties ({args.ties}): other trees with a score equal to the sweep tree's, summed over chromosomes: "
+          + ", ".join(f"{k} {v}" for k, v in n_tied.items()))
     print(f"\nSummary over {args.n_replicates} independent single-chromosome replicates "
           f"(median {int(np.median(n_trees_per_rep))} real trees/chromosome):")
     print(f"{'detector':20s} {'median top%':>12s} {'mean top%':>10s} {'top10%':>8s} {'top20%':>8s} {'top25%':>8s}")

@@ -1,0 +1,546 @@
+\documentclass[11pt]{article}
+
+% ----------------------------------------------------------------------
+% Step-by-step tutorial for the PGINN code: simulate,
+% train and test the networks of one regime (10 loci, n = 10) with the
+% paper's settings. The commands are in run_tutorial.sh; all numbers in
+% this document are that script's output.
+% ----------------------------------------------------------------------
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\lstset{basicstyle=\small\ttfamily, columns=fullflexible, keepspaces=true,
+  frame=single, rulecolor=\color{black!30}, backgroundcolor=\color{black!3},
+  breaklines=true, xleftmargin=0.5em, xrightmargin=0.5em, aboveskip=0.8em}
+\lstdefinestyle{py}{language=Python, commentstyle=\color{black!55},
+  keywordstyle=\bfseries}
+\newcommand{\file}[1]{\texttt{#1}}
+\usepackage{xspace}
+\newcommand{\pginn}{PGINN\xspace}
+\newcommand{\migrate}{\textsc{migrate}\xspace}
+
+\title{\textbf{PGINN step by step:\\simulate, train and test the networks for one regime}}
+\author{Peter Beerli}
+\date{\today}
+
+\emergencystretch=3em
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The script \file{../code/reproduce.sh} rebuilds every figure and table of
+the paper, but it calls more than 50 Python scripts, and the core of the
+method is hard to see among them. This tutorial follows the core path
+alone, for one regime: 10 loci per data set and $n{=}10$ samples. It
+simulates genealogies under the sweep model, turns them into network
+inputs, trains one network with the MSE loss and one with the \pginn
+loss, and tests both on new simulated data. The commands are collected
+in \file{run\_tutorial.sh}; the whole run takes about
+70\,s on a laptop with 16 cores. The script uses the paper's priors,
+sizes and random seeds, and its data and networks are identical, bit for
+bit, to the paper's files for this regime (Section~\ref{sec:check}).
+\end{abstract}
+
+\tableofcontents
+
+\section{Overview}\label{sec:overview}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Step & Command & Script(s) & Output in \file{work/} \\
+\midrule
+1 & \file{genealogy} & \file{sweep.py}, \file{simtree.py} & \file{tp.txt}, \file{one.json}, \file{genealogy.pdf}\\
+2 & \file{simulate}  & \file{simulate\_sweep.py} $\to$ \file{simtree.py} & \file{train-sweep/} and three more folders \\
+3 & \file{features}  & \file{prepare.py} & \file{*-features.npy}, \file{*-params.npy}, \file{*-ages.npy} \\
+4 & \file{train}     & \file{train\_pginn.py} & \file{model-\{mse,pginn\}.pt}, \file{scaler-*.npz} \\
+5 & \file{test}      & \file{compare.py} & \file{recovery.pdf}, \file{recovery.csv} \\
+6 & \file{score}     & \file{train\_pginn.predict()} & printed summary \\
+-- & \file{check}    & -- & comparison with \file{../code/data}, \file{../code/model} \\
+\bottomrule
+\end{tabular}
+\caption{The steps of \file{run\_tutorial.sh}. All scripts are in
+\file{../code/}; paths in this document are relative to the folder \file{tutorial/}.}
+\label{tab:steps}
+\end{table}
+
+Run all steps, or one step at a time, from any directory:
+\begin{lstlisting}
+cd tutorial                  # this folder; the scripts are in ../code
+./run_tutorial.sh            # all steps, about 70 s
+./run_tutorial.sh simulate   # one step; later steps need the earlier ones
+./run_tutorial.sh check      # compare with the paper's data and networks
+\end{lstlisting}
+The script needs the Python packages of \file{../requirements.txt}
+(\texttt{numpy}, \texttt{torch}, \texttt{matplotlib}); \texttt{msprime}
+and \migrate are not needed. Everything is written to
+\file{work/} (about 70\,MB).
+
+\paragraph{The model in brief.}
+A single population has the mutation-scaled size $\theta{=}c\mu$ and
+the population-scaled selection coefficient $s{=}c\,s_g$.
+A completed hard sweep shrinks the ancestral class of the sample toward
+the past.
+Toward the past, the frequency of the selected allele falls as
+\begin{equation}
+x(t;s) = \frac{x_0}{x_0 + (1-x_0)\,e^{st}}, \qquad x_0 = 0.999,
+\label{eq:xtraj}
+\end{equation}
+down to the floor $x_{\min}{=}10^{-4}$.
+Genealogies measure time in expected mutations per site, $u{=}\theta t$.
+On this scale the size of the selected class and the coalescent rate for
+$k$ lineages are
+\begin{equation}
+\theta_{\text{e}}(u) = \theta\,x(u/\theta;s), \qquad
+\lambda_k(u) = \frac{k(k-1)}{\theta_{\text{e}}(u)} .
+\label{eq:rate}
+\end{equation}
+The network estimates $(\theta,s)$ from the genealogies of a data set.
+
+\section{Step 1: one genealogy by hand}\label{sec:step1}
+
+The simulator \file{simtree.py} draws coalescent genealogies with a
+piecewise-constant $\theta$.
+A sweep enters only through a \emph{timepoints} file: each line holds an
+age $u$ and the value of $\theta_{\text{e}}$ from that age on.
+\file{sweep.py} writes this file. It places 40 breakpoints evenly in
+$\log x$ between $0.999\,x_0$ and $x_{\min}$ and converts each to its age
+by inverting Eq.~\ref{eq:xtraj}:
+\begin{lstlisting}[style=py, title={\file{../code/sweep.py}, \texttt{make\_timepoints\_file} (core lines)}]
+x_points = np.geomspace(x0 * 0.999, x_min, n_segments)
+t_points = t_of_x(x_points, rate_per_age(s, theta), x0)
+with open(path, "w") as f:
+    for t, x in zip(t_points, x_points):
+        f.write(f"{t:.10g} {theta * x:.10g}\n")
+\end{lstlisting}
+\texttt{rate\_per\_age(s, theta)} is $s/\theta$, so the trajectory is
+evaluated directly on the age scale $u$.
+Step~1 of the script writes the schedule for $\theta{=}0.01$, $s{=}100$
+and simulates one genealogy with it and one neutral genealogy:
+\begin{lstlisting}
+python -c "import sweep; sweep.make_timepoints_file('tp.txt', 0.01, 100.0)"
+python simtree.py -t 0.01 -i 10 -a 1.0 -sel 100 -tp tp.txt -l 1 --json -f one.json --seed 1
+python simtree.py -t 0.01 -i 10 -a 1.0 -l 1 --json -f one-neutral.json --seed 1
+\end{lstlisting}
+The options are: \texttt{-t} $\theta$, \texttt{-i} sample size,
+\texttt{-a 1.0} the Kingman coalescent (the simulator also has a
+fractional coalescent, $\alpha{<}1$; the default \texttt{"1.0,1.0"}
+would set up two populations), \texttt{-l} number of loci,
+\texttt{--json} the output format used below, and \texttt{--seed} the
+random seed.
+The value of \texttt{-sel} is only recorded in the output; the sweep
+itself acts through \texttt{-tp}.
+The first lines of \file{tp.txt} are
+\begin{lstlisting}
+6.936475559e-05 0.00998001
+0.0005593159182 0.007881142072
+0.0006407142897 0.006223681175
+\end{lstlisting}
+Figure~\ref{fig:genealogy}a shows the schedule against the continuous
+$\theta_{\text{e}}(u)$; Figure~\ref{fig:genealogy}b shows the two
+genealogies.
+The sweep genealogy has its root at $u{=}0.0012$, where
+$\theta_{\text{e}}$ has collapsed; the neutral genealogy has its root at
+$u{=}0.0066$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{work/genealogy.pdf}
+\caption{(a) $\theta_{\text{e}}(u)$ at $\theta{=}0.01$ for three values
+of $s$ (Eq.~\ref{eq:rate}), and the 40-step schedule that
+\file{simtree.py} receives for $s{=}100$ (dotted). (b) Number of
+lineages against age for the two genealogies of step~1 (same random
+seed). Made by \file{genealogy\_fig.py}.}
+\label{fig:genealogy}
+\end{figure}
+
+\paragraph{The JSON output.}
+\file{one.json} is a list with one entry per locus. Each entry has the
+fields
+\begin{center}
+\small
+\begin{tabular}{@{}llp{0.66\textwidth}@{}}
+\toprule
+Field & Length ($n{=}10$) & Content \\
+\midrule
+\texttt{params} & -- & $[[\theta],[\alpha],[s]]$ \\
+\texttt{tree}   & -- & the genealogy in Newick format; tips \texttt{0\_0} \ldots\ \texttt{0\_9} (population\_tip) \\
+\texttt{ages}   & 9  & ages of the $n{-}1$ internal nodes, oldest first \\
+\texttt{age}    & 45 & age of the most recent common ancestor (MRCA) of each pair of tips \\
+\texttt{inter}  & 45 & populations of the two tips of each pair (always \texttt{[0,0]} here) \\
+\texttt{M}      & 55 & per pair: number of edges from the root to the MRCA; per tip: 1 \\
+\texttt{m}      & 55 & per pair: length of the path from the root to the MRCA; per tip: its branch length \\
+\bottomrule
+\end{tabular}
+\end{center}
+The vectors \texttt{M} and \texttt{m} are the Kendall--Colijn tree
+vectors, computed in \file{../code/Mm.py}.
+Note that the JSON names are swapped relative to \file{Mm.py}, where
+\texttt{m} is the edge count and \texttt{M} the path length; the JSON
+field \texttt{m} holds the lengths.
+Pairs are ordered by tip name, tips are listed after the pairs.
+
+\section{Step 2: training, validation and test data}\label{sec:step2}
+
+\file{simulate\_sweep.py} draws $(\theta,s)$ from the prior and calls
+\file{simtree.py} once per draw, in parallel on all cores.
+For $s{>}0$ it writes a timepoints file as in step~1.
+Each draw has its own random seed, the base seed plus the draw number,
+so a data set is reproducible exactly.
+\begin{lstlisting}
+PRIOR=(--theta-min 0.001 --theta-max 0.05 --theta-prior loguniform --s-prior loguniform --s-min 1)
+python simulate_sweep.py -f train-sweep     -n 1000 -l 10 --nind 10 --smax 1000 --seed 100000 $PRIOR --s-zero-frac 0.25
+python simulate_sweep.py -f test-sweep      -n 100  -l 10 --nind 10 --smax 1000 --seed 110000 $PRIOR --s-zero-frac 0.25
+python simulate_sweep.py -f predict-sweep   -n 400  -l 10 --nind 10 --smax 1000 --seed 120000 $PRIOR
+python simulate_sweep.py -f predict-neutral -n 400  -l 10 --nind 10 --smax 0    --seed 130000 $PRIOR
+\end{lstlisting}
+The four sets are
+\begin{center}
+\small
+\begin{tabular}{@{}llp{0.33\textwidth}l@{}}
+\toprule
+Folder & Draws & Prior on $s$ & Use \\
+\midrule
+\file{train-sweep}     & 1000 & 0 with prob.\ 0.25, else log-uniform on $[1,1000]$ & training \\
+\file{test-sweep}      & 100  & as training & validation (choice of the epoch) \\
+\file{predict-sweep}   & 400  & log-uniform on $[1,1000]$ & test of recovery \\
+\file{predict-neutral} & 400  & $s{=}0$ & test under neutrality \\
+\bottomrule
+\end{tabular}
+\end{center}
+In all four sets $\theta$ is log-uniform on $[0.001,0.05]$.
+The file names follow \file{../code/reproduce.sh}, where the validation set
+is called \file{test-sweep}.
+Each draw is one data set of 10 independent loci (\texttt{-l 10}),
+stored as one JSON file, for example
+\file{train-sweep/test-000001-theta-0.002846-s-3.7509.json}.
+Each folder also has a \file{manifest.csv} with the parameters and seed
+of every draw.
+In the training set 262 of the 1000 draws have $s{=}0$.
+
+\section{Step 3: from genealogies to network inputs}\label{sec:step3}
+
+\file{prepare.py} reads every JSON file of a folder and writes three
+arrays, one row per draw (the counts are for $n{=}10$):
+\begin{lstlisting}
+python prepare.py --train train-sweep --interest 0,2 --prefix train-sweep
+#  train-sweep-features.npy (1000, 225)   network input
+#  train-sweep-params.npy   (1000, 2)     targets: [log theta, s]
+#  train-sweep-ages.npy     (1000, 9)     mean internal-node ages, for the PGINN loss
+\end{lstlisting}
+\texttt{--interest 0,2} selects entries 0 and 2 of the flattened
+\texttt{params}, that is $\theta$ and $s$.
+The program prints ``Saved 3 averaged samples''; the 3 is the number of
+arrays, not the number of draws.
+
+\paragraph{The feature vector.}
+Within each genealogy, the pair entries and the tip entries are sorted
+by age, so that the vectors of different genealogies can be averaged
+(tip labels have no meaning across independent loci).
+The feature vector is then the mean over the 10 loci of four blocks.
+With $P{=}n(n{-}1)/2+n{=}55$ entries per pair-and-tip block:
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Columns & Block & Content & Scale in the network \\
+\midrule
+0--54    & 0 & path lengths, root to MRCA (JSON \texttt{m}) & log \\
+55--109  & 1 & edge counts, root to MRCA (JSON \texttt{M}) & linear \\
+110--164 & 2 & pair MRCA ages, then the tip branch lengths & log \\
+165--224 & 3 & internal-node ages, youngest first, padded to $\max(20,n)$ rows $\times$ 3 & log (age column) \\
+\bottomrule
+\end{tabular}
+\end{center}
+The rows of block~3 are $(\text{age},\text{pop}_1,\text{pop}_2)$; for one
+population the last two columns are zero, and rows beyond the $n{-}1$
+internal nodes are zero padding.
+In the paper's main networks the age-valued entries are replaced by
+$\log(x+10^{-5})$. This transformation is the function \texttt{featlog}
+in \file{../code/feature\_ages.py}.
+\file{train\_pginn.py} applies it when called with
+\texttt{--input-transform featlog} and stores the choice in the scaler
+file, so the raw \file{-features.npy} serve as input throughout.
+(\file{reproduce.sh} also runs \file{feature\_ages.py}, which writes
+\file{-featlog.npy} and other input variants to disk for the comparisons
+in the supplement; the tutorial does not need them.)
+
+\paragraph{Targets and ages.}
+\file{-params.npy} holds $[\log\theta, s]$ with $s$ on its natural
+scale; \file{train\_pginn.py} turns the second column into
+$\log(1{+}s)$.
+\file{-ages.npy} holds, for every draw, the internal-node ages of each
+locus sorted from the oldest to the youngest, averaged over the loci.
+The \pginn loss evaluates the coalescent rates at these ages.
+
+\section{Step 4: training}\label{sec:step4}
+
+\begin{lstlisting}
+b=(--x-train train-sweep-features.npy --y-train train-sweep-params.npy --ages-train train-sweep-ages.npy
+   --x-val test-sweep-features.npy --y-val test-sweep-params.npy --ages-val test-sweep-ages.npy
+   --input-transform featlog --seed 67)
+python train_pginn.py $b --pginnratio 0   --out-model model-mse.pt   --out-scaler scaler-mse.npz
+python train_pginn.py $b --pginnratio 0.1 --out-model model-pginn.pt --out-scaler scaler-pginn.npz
+\end{lstlisting}
+
+\paragraph{Network.}
+A multilayer perceptron with two hidden layers of 256 units, each linear
+layer followed by ReLU and batch normalization, and a linear output
+layer with two values (\texttt{MLPRegressor}).
+Inputs and targets are standardized with the means and standard
+deviations of the training set.
+Training uses AdamW (learning rate $10^{-3}$, weight decay $10^{-4}$),
+batches of 64 and 300 epochs.
+
+\paragraph{Loss.}
+The network predicts $\hat\phi{=}(\log\hat\theta,\log(1{+}\hat s))$.
+The training loss mixes the mean squared error with the \pginn penalty,
+with weight $w$ (\texttt{--pginnratio}):
+\begin{equation}
+\mathcal{L} = (1-w)\,\text{MSE} + w\,\mathcal{L}_{\text{local}},
+\qquad
+\mathcal{L}_{\text{local}} =
+\frac{1}{K}\sum_{k=2}^{n}
+\left[
+\log\frac{\hat\lambda_k(u_{(k)})}{\lambda_k(u_{(k)})} + \frac{\lambda_k(u_{(k)})}{\hat\lambda_k(u_{(k)})} - 1
+\right],
+\label{eq:loss}
+\end{equation}
+with $K{=}n{-}1$ and $u_{(k)}$ the age at which $k$ lineages merge into
+$k{-}1$.
+$w{=}0$ is the MSE network, and $w{=}0.1$ the \pginn network of the paper.
+The penalty is the KL divergence between two exponential distributions
+with the rates under the predicted and the true parameters, each
+evaluated at the observed event age. In the code:
+\begin{lstlisting}[style=py, title={\file{../code/train\_pginn.py}, \texttt{coalescent\_kl\_selection} (core lines)}]
+K = ages.shape[1]
+k = torch.arange(2, K + 2, device=ages.device, dtype=ages.dtype)  # [2,3,...,K+1]
+k_km1 = k * (k - 1)  # (K,)
+
+x_hat = x_trajectory_torch(ages, (s_hat / theta_hat).unsqueeze(1))     # (B,K)
+x_true = x_trajectory_torch(ages, (s_true / theta_true).unsqueeze(1))  # (B,K)
+
+theta_eff_hat = theta_hat.unsqueeze(1) * x_hat + eps
+theta_eff_true = theta_true.unsqueeze(1) * x_true + eps
+
+lam_hat = (k_km1.unsqueeze(0) / theta_eff_hat).clamp(max=MAX_LAMBDA)
+lam = (k_km1.unsqueeze(0) / theta_eff_true).clamp(max=MAX_LAMBDA)
+
+kl_per_interval = torch.log(lam_hat / lam + eps) + lam / lam_hat - 1.0
+return kl_per_interval.mean(dim=1)
+\end{lstlisting}
+Before these lines the function undoes the standardization of the
+predicted and the true targets and converts them to $\hat\theta,\hat s$
+and $\theta,s$.
+Column 0 of \texttt{ages} is the root, so it belongs to $k{=}2$.
+The mixing of the two terms is in \texttt{train\_epoch}:
+\begin{lstlisting}[style=py, title={\file{../code/train\_pginn.py}, \texttt{train\_epoch}}]
+pred = model(xb)
+mse = mse_criterion(pred, yb) if s_weight == 1.0 else weighted_mse(pred, yb, s_weight)
+kl_loss = term(pred, yb, y_mean, y_std, ages).mean()
+loss = (1.0 - pginnratio) * mse + pginnratio * kl_loss
+\end{lstlisting}
+The option \texttt{--loss} selects the other penalties of the paper
+(\texttt{exact}, \texttt{fisher}, \texttt{process},
+\texttt{process-fwd}); they need other age files
+(Section~\ref{sec:further}).
+
+\paragraph{Choice of the epoch and the output.}
+After every epoch the loss on the validation set is computed; the
+network of the epoch with the lowest validation loss is kept.
+The last lines of the two training logs (\file{work/train-*.log}) are
+\begin{lstlisting}
+==> work/train-mse.log <==
+Best validation loss: 0.06665127277374268 at epoch 5
+==> work/train-pginn.log <==
+Best validation loss: 0.07293154954910279 at epoch 300
+\end{lstlisting}
+For this training run the MSE network is the one of epoch~5: its
+validation loss fluctuates strongly in the first epochs (0.075, 0.081,
+0.067, 0.097, 0.108 in epochs 3--7) and does not fall below the value of
+epoch~5 later; at epoch 300 it is 0.080.
+Each run writes two files: the network weights (\file{.pt}) and a scaler
+file (\file{.npz}) with the standardization constants, the
+$\log(1{+}s)$ link and the input transformation.
+Both files are needed for prediction.
+The weights are reproducible bit for bit only with the same random seed
+and the same number of CPU threads (\texttt{--threads}, default 2).
+
+\section{Step 5: test of recovery}\label{sec:step5}
+
+\begin{lstlisting}
+python compare.py --x predict-sweep-features.npy --y predict-sweep-params.npy \
+  --model-mse model-mse.pt --scaler-mse scaler-mse.npz \
+  --model-pginn model-pginn.pt --scaler-pginn scaler-pginn.npz \
+  --out-fig recovery.pdf --out-table recovery.csv
+\end{lstlisting}
+\file{compare.py} estimates $(\theta,s)$ for the 400 test data sets
+with both networks and reports bias, root mean squared error and $R^2$
+(Table~\ref{tab:recovery}, Figure~\ref{fig:recovery}).
+$s$ is evaluated on the $\log(1{+}s)$ scale, the scale of its prior and
+of the network's target.
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Parameter & Loss & Bias & RMSE & $R^2$ \\
+\midrule
+$\theta$       & MSE   & 0.00041  & 0.0030 & 0.939 \\
+               & \pginn & $-0.00046$ & 0.0028 & 0.946 \\
+$\log(1{+}s)$  & MSE   & $-0.338$ & 0.622 & 0.881 \\
+               & \pginn & $-0.290$ & 0.671 & 0.862 \\
+\bottomrule
+\end{tabular}
+\caption{Recovery on the 400 test data sets (\file{work/recovery.csv},
+rounded). The file also has the rows for $s$ on its natural scale.}
+\label{tab:recovery}
+\end{table}
+\file{reproduce.sh} writes the same table to
+\file{../figures/recovery\_10l\_featlog.csv}.
+It is one training run on one data set. The comparison of the losses in
+\file{nested\_eval.py} uses 10 independent data sets with three
+training runs each.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{work/recovery.pdf}
+\caption{Estimated against true $\theta$ and $\log(1{+}s)$ for the 400
+test data sets, MSE and \pginn network (\file{compare.py}).}
+\label{fig:recovery}
+\end{figure}
+
+\section{Step 6: estimates for new data}\label{sec:step6}
+
+New data enter the networks as feature vectors with the layout of
+step~3. The function \texttt{predict} in \file{train\_pginn.py} applies
+the scaler, runs the network and undoes the links:
+\begin{lstlisting}[style=py, title={\file{../code/train\_pginn.py}, \texttt{predict} (core lines)}]
+scaler = np.load(scaler_path, allow_pickle=True)
+if "input_transform" in scaler and str(scaler["input_transform"]) == "featlog":
+    from feature_ages import featlog
+    X = featlog(X)
+x_std = (X - scaler["x_mean"]) / scaler["x_std"]
+model = MLPRegressor(X.shape[1], scaler["y_mean"].shape[0])
+model.load_state_dict(torch.load(model_path, map_location="cpu"))
+model.eval()
+with torch.no_grad():
+    z = model(torch.from_numpy(x_std).float()).numpy() * scaler["y_std"] + scaler["y_mean"]
+theta = np.clip(np.exp(z[:, 0]) + MIN_THETA, *THETA_SUPPORT)
+s = np.clip(np.expm1(z[:, 1]), *S_SUPPORT)
+\end{lstlisting}
+Estimates are bounded to the support of the training prior,
+$\theta\in[0.001,0.05]$ and $s\in[0,1000]$.
+Step~6 scores the 400 neutral test data sets:
+\begin{lstlisting}
+mse    median s_hat   1.31   s_hat < 5: 0.96   corr(log theta_hat, log theta) 0.992
+pginn  median s_hat   1.06   s_hat < 5: 0.95   corr(log theta_hat, log theta) 0.993
+\end{lstlisting}
+Under neutrality both networks give small $\hat s$ for most data sets.
+The paper uses $\hat s$ as the detection statistic, with a threshold
+from the neutral sets of another data set (\file{nested\_eval.py}).
+For real sequence data the genealogies are not known; the paper scores
+the posterior genealogies of \migrate
+(\file{real\_adh\_migrate\_scan.py}); that script writes each tree in
+the JSON format of step~1 (with \file{Mm.py}) and builds the feature
+vectors with the code of \file{prepare.py}.
+
+\section{Check against the paper's files}\label{sec:check}
+
+\file{./run\_tutorial.sh check} compares the arrays of step~3 and the
+networks of step~4 with the paper's files:
+\begin{lstlisting}
+work/{set}-{features,params,ages}.npy  vs  ../code/data/{set}-10l-{features,params,ages}.npy
+work/model-mse.pt                      vs  ../code/model/model-mse-10l-featlog.pt
+work/model-pginn.pt                    vs  ../code/model/model-pginn-10l-0.1-featlog.pt
+\end{lstlisting}
+The networks are those of training run 67, created by the \texttt{simulate} and
+\texttt{revision-train} stages of \file{reproduce.sh} (or fetched from
+Zenodo with \file{fetch\_data.sh}).
+On 2026-10-23 all twelve arrays and both networks were identical.
+If they differ on another machine, the most likely reasons are a
+different number of CPU threads or a different version of
+\texttt{torch} or \texttt{numpy}.
+
+\section{Further: the rest of the code}\label{sec:further}
+
+\paragraph{Other regimes.}
+\file{reproduce.sh} runs steps 2--4 for six regimes, with the same
+commands and other values of \texttt{-l}, \texttt{--nind} and the seeds:
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Regime & Loci & $n$ & Base seed \\
+\midrule
+\texttt{10l}     & 10 & 10  & 100000 \\
+\texttt{1l}      & 1  & 10  & 200000 \\
+\texttt{10l-n20} & 10 & 20  & 300000 \\
+\texttt{1l-n20}  & 1  & 20  & 400000 \\
+\texttt{1l-n176} & 1  & 176 & 600000 \\
+\texttt{1l-n100} & 1  & 100 & 800000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The validation, selected test and neutral test sets use the base seed
+plus 10000, 20000 and 30000.
+The paper trains 10 runs per regime and loss (seeds 67--76).
+The regime \texttt{1l-n176} is used for the \emph{Adh} data and
+\texttt{1l-n100} for the simulated chromosomes (stage
+\texttt{chrom-simulate}).
+
+\paragraph{Other penalties.}
+The penalties of the paper's penalty family differ in the option
+\texttt{--loss} and in the file passed as \texttt{--ages-*}:
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Penalty (paper) & \texttt{--loss} & \texttt{--ages-train}, \texttt{--ages-val} \\
+\midrule
+local rate divergence      & \texttt{local} (default) & \file{-ages.npy} \\
+exact log-likelihood ratio & \texttt{exact}       & \file{-locusages.npy} (\file{per\_locus\_ages.py}) \\
+process divergences        & \texttt{process}, \texttt{process-fwd} & \file{-locusages.npy} \\
+Fisher penalty             & \texttt{fisher}      & \file{-fisher.npy} (\file{fisher\_info.py}) \\
+weighted MSE               & \texttt{--pginnratio 0 --s-weight 5} & \file{-ages.npy} (not used) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Map of the scripts.}
+The other scripts of \file{../code/} fall into these groups; the file
+\file{../reproducibility.txt} lists which script writes which output
+file.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.71\textwidth}@{}}
+\toprule
+Group & Scripts \\
+\midrule
+Core (this tutorial) & \file{sweep.py}, \file{simtree.py} (with \file{tree.py}, \file{Mm.py}), \file{simulate\_sweep.py}, \file{prepare.py}, \file{feature\_ages.py}, \file{train\_pginn.py}, \file{compare.py} \\
+Inputs for other penalties & \file{per\_locus\_ages.py}, \file{fisher\_info.py} \\
+Choice of the weights & \file{lambda\_sweep\_val.py}, \file{variant\_sweep\_val.py}, \file{w1\_diagnostic.py}, \file{w1\_check.py} \\
+Comparison of the losses & \file{nested\_eval.py} (main table), \file{variance\_mechanism.py}, \file{combined\_detector.py}, \file{eval\_n176.py}, \file{penalty\_share.py}, \file{loss\_timing.py}, \file{asymmetry\_fig.py} \\
+Baselines & \file{mle\_baseline.py}, \file{mle\_check.py}, \file{ages\_regression.py}, \file{star\_ratio\_appendix.py} \\
+Checks of the model and the penalties & \file{calibrate\_sweep.py}, \file{discretization\_check.py}, \file{fisher\_check.py}, \file{process\_kl\_check.py}, \file{neutral\_limit.py} \\
+\texttt{msprime} chromosomes & \file{msprime\_scan*.py}, \file{msprime\_metrics.py}, \file{robustness\_demography.py} \\
+Chromosomes through \migrate & \file{chrom\_pipeline.sh}, \file{chrom\_sweep\_sim.py}, \file{chrom\_*.py}, \file{average\_runs.py} \\
+\emph{Adh} data & \file{four\_gamete\_test.py}, \file{make\_migrate\_windows.py}, \file{extract\_dgrp\_region.py}, \file{real\_adh\_migrate\_scan.py}, \file{adh\_*.py}, \file{real\_data\_summary\_fig.py}, \file{mcdonald\_kreitman\_test.py} \\
+Other & \file{detect\_selection.py}, \file{paired\_test.py}, \file{../talk/growth\_scan\_talk.py} (growth scan) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
